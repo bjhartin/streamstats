@@ -1,22 +1,16 @@
 package org.banno.streamstats
 
+import statistics.Configuration
 import twitter4j._
+import twitter4j.StatusJSONImpl
 import org.junit.Test
 
-class BasicTest {
-  val config = new twitter4j.conf.ConfigurationBuilder()
-      .setOAuthConsumerKey("yk0KovuMjOnFLZnhHCAzGZtD2")
-      .setOAuthConsumerSecret("EMZrs9gEM3sxRIK2nnKePu0DvT9owSgRqVwlo5Yo3twsP077PQ")
-      .setOAuthAccessToken("5865682-4ooaSuQCoobUSdVK3Zuxv9EkwBmL5ayF1iVmq9tmcz")
-      .setOAuthAccessTokenSecret("OnAkbyoimDqi8cxqjv0VxHoQJ1pdDRByoj4dib5jrBPbd")
-      .build
-
+class PrototypeTest {
   def simpleStatusListener = new StatusListener() {
     var tweetsReceived = 0
 
     def onStatus(status: Status) {
-//      println(status.getText)
-//      println("tweet " + tweetsReceived + " received")
+      println(status.getText)
       tweetsReceived += 1
     }
     def onDeletionNotice(statusDeletionNotice: StatusDeletionNotice) {}
@@ -29,7 +23,7 @@ class BasicTest {
   @Test
   def configWorks() {
     val listener = simpleStatusListener
-    val twitterStream = new TwitterStreamFactory(config).getInstance
+    val twitterStream = new TwitterStreamFactory(Configuration.create).getInstance
     twitterStream.addListener(listener)
     println("Beginning to sample...")
     twitterStream.sample
