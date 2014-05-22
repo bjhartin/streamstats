@@ -1,11 +1,11 @@
 package org.banno.streamstats.statistics
 
-object TotalTweets {
-  var totalTweets = 0
-}
+import twitter4j.Status
 
-class TotalTweets extends IntStatistic {
-  override def compute():Int = {
-    TotalTweets.totalTweets += 1
+class TotalTweets extends Statistic {
+  var value:Int = 0
+
+  override def compute(status:Status) {
+    value += 1
   }
 }
