@@ -10,7 +10,6 @@ class PrototypeTest {
     var tweetsReceived = 0
 
     def onStatus(status: Status) {
-      println(status.getText)
       tweetsReceived += 1
     }
     def onDeletionNotice(statusDeletionNotice: StatusDeletionNotice) {}

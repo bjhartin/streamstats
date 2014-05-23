@@ -1,5 +1,8 @@
-Mocking library - needed for Status at first
-Blocking listener
-  Stats
-Non blocking listener
+X Mocking library - needed for Status at first
+X Blocking listener
+X  Stats
+X Non blocking listener
+Concurrent tweet processing
+Individual stats implementations
+Handling mutability
 Reporting

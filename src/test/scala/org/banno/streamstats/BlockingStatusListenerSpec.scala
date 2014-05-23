@@ -26,10 +26,12 @@ class BlockingStatusListenerSpec extends BaseSpec {
     val numberOfStats = 10
     val numberOfTweets = 50
     val timeToComputeAStatInMs = 10
+    var statsComputed = 0
 
     val stats = (1 to numberOfStats).map(i => new Statistic {
       override def compute(status:Status) = {
         Thread.sleep(timeToComputeAStatInMs)
+        statsComputed += 1
       }
     }).toList
 
@@ -40,13 +42,8 @@ class BlockingStatusListenerSpec extends BaseSpec {
     val listener = new BlockingStatusListener(stats)
     val tweets = (1 to numberOfTweets).map( i => mock[Status])
     val elapsed = benchmark(tweets.foreach(listener.onStatus(_)))
+    statsComputed should be(numberOfStats * numberOfTweets)
+    println(elapsed)
     elapsed should be(expectedTime +- (expectedTime * 0.2)) // 20% variance allowed before test fails
-  }
-
-  def benchmark(f: => Any):Double = {
-    val start = System.nanoTime()
-    f
-    val end = System.nanoTime()
-    (end - start) / 1e6
   }
 }
