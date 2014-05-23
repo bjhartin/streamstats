@@ -1,8 +1,6 @@
 package org.banno.streamstats
 
-import statistics.Configuration
 import twitter4j._
-import twitter4j.StatusJSONImpl
 import org.junit.Test
 
 class PrototypeTest {

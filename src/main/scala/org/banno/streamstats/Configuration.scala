@@ -1,4 +1,4 @@
-package org.banno.streamstats.statistics
+package org.banno.streamstats
 
 object Configuration {
   def create = new twitter4j.conf.ConfigurationBuilder()

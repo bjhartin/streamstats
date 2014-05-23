@@ -1,9 +1,7 @@
 package org.banno.streamstats
 
-import statistics.{Statistic, TotalTweets, BlockingStatusListener}
+import statistics.{Statistic, TotalTweets}
 import twitter4j.Status
-import org.scalatest.{Matchers, FlatSpec}
-import org.scalatest.mock.MockitoSugar
 
 class BlockingStatusListenerSpec extends BaseSpec {
   behavior of "A blocking status listener"

@@ -1,6 +1,6 @@
 package org.banno.streamstats
 
-import statistics.{TotalTweets, NonBlockingStatusListener, BlockingStatusListener, Statistic}
+import statistics.{TotalTweets, Statistic}
 import twitter4j.Status
 
 class NonBlockingStatusListenerSpec extends BaseSpec {

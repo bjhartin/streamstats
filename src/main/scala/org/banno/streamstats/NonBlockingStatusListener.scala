@@ -1,5 +1,6 @@
-package org.banno.streamstats.statistics
+package org.banno.streamstats
 
+import statistics.Statistic
 import twitter4j.{StallWarning, StatusDeletionNotice, Status, StatusListener}
 import scala.concurrent._
 import ExecutionContext.Implicits.global
