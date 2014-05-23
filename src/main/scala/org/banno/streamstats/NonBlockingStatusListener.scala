@@ -1,10 +1,11 @@
 package org.banno.streamstats
 
 import statistics.Statistic
+import tweetprocessing._
+import tweetprocessing.TweetProcessor
 import twitter4j.{StallWarning, StatusDeletionNotice, Status, StatusListener}
 import scala.concurrent._
 import ExecutionContext.Implicits.global
-import scala.util.{Success, Failure}
 import scala.concurrent.duration._
 
 case class NonBlockingStatusListener(statistics:List[Statistic]) extends StatusListener {
@@ -24,4 +25,9 @@ case class NonBlockingStatusListener(statistics:List[Statistic]) extends StatusL
   def onException(ex: Exception) {throw ex}
   def onScrubGeo(p1: Long, p2: Long) {}
   def onStallWarning(p1: StallWarning) {}
+
+  private def tweetProcessor():TweetProcessor = new TweetProcessor(List(new CountExtractor,
+                                    new EmojiExtractor,
+                                    new HashTagExtractor,
+                                    new UrlExtractor))
 }
