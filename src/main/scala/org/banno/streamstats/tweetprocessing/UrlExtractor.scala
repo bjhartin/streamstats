@@ -5,9 +5,7 @@ import com.twitter.Extractor
 import collection.JavaConverters._
 
 class UrlExtractor extends TweetInfoExtractor {
-  def twitterTextExtractor = new Extractor() // Will change to val if not fast enough
+  def twitterTextExtractor = new Extractor()
 
-  override def extractInfo(status: Status): Any = {
-    twitterTextExtractor.extractURLs(status.getText).asScala.toList
-  }
+  override def extractInfo(status: Status): Any = twitterTextExtractor.extractURLs(status.getText).asScala.toList
 }

@@ -1,0 +1,5 @@
+* Used twitter4j
+* Used twitter-text
+** Did not need to write edge-case tests
+* Targeted 1000 tweets/s for all low-level ops
+** Many of these can be much faster if I simply convert some defs to vals

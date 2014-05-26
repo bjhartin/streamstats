@@ -25,4 +25,14 @@ class HashTagExtractorSpec extends BaseSpec {
     when(status.getText()).thenReturn("foo")
     extractor.extractInfo(status) should be(Nil)
   }
+
+  it should "perform reasonably well" in {
+    val status = mock[Status]
+    val tweets = 10000
+    when(status.getText()).thenReturn("This is a #test which is #notreal")
+
+    val tps = tweetsPerSecond(tweets, extractor.extractInfo(status))
+    tps should be > 1000.0
+    println(s"Tweets/s: $tps")
+  }
 }

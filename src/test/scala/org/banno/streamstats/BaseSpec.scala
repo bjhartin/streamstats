@@ -11,4 +11,13 @@ class BaseSpec extends FlatSpec with Matchers with MockitoSugar
     val end = System.nanoTime()
     (end - start) / 1e6
   }
+
+  def tweetsPerSecond(tweets: Int, f: => Any):Double = {
+    val elapsed = benchmark {
+      (1 to tweets).foreach {i =>
+        f
+      }
+    }
+    tweets / (elapsed / 1000)
+  }
 }

@@ -8,5 +8,7 @@ Handling mutability
 Reporting
 Error Handling (Optional)
 Better typing for the tweet info
+Fail if JVM encoding not UTF-8
+Handle emoji char ranges
 
 Rename *Test to *Spec

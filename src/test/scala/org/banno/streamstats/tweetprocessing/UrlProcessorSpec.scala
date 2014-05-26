@@ -25,4 +25,14 @@ class UrlProcessorSpec extends BaseSpec {
     when(status.getText()).thenReturn("foo")
     extractor.extractInfo(status) should be(Nil)
   }
+
+  it should "perform reasonably well" in {
+    val status = mock[Status]
+    val tweets = 10000
+    when(status.getText()).thenReturn("http://google.com and http://bing.com are search engines")
+
+    val tps = tweetsPerSecond(tweets, extractor.extractInfo(status))
+    tps should be > 1000.0
+    println(s"Tweets/s: $tps")
+  }
 }
