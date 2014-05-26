@@ -26,10 +26,14 @@ class TweetProcessorTest extends BaseSpec {
     val numberOfTweets = 50
     val timeToExtractInfoInMs = 10
 
+    val pattern = """(\d{3}) (\d{3}) (\d{4})""".r
+
     val extractors = (1 to numberOfExtractors).map(i => new TweetInfoExtractor {
       override def extractInfo(status:Status):Any = {
+//        (1 to 50).foreach(i =>
+//          pattern.findAllIn("fdijfjadljfa 319 329 9531 fdsajfdslfd;lads 319 329 7961 fdijfjadljfa 319 329 9531 fdsajfdslfd;lads 319 329 7961 fdijfjadljfa 319 329 9531 fdsajfdslfd;lads 319 329 7961 fdijfjadljfa 319 329 9531 fdsajfdslfd;lads 319 329 7961 fdijfjadljfa 319 329 9531 fdsajfdslfd;lads 319 329 7961 fdijfjadljfa 319 329 9531 fdsajfdslfd;lads 319 329 7961")
+//        )
         Thread.sleep(timeToExtractInfoInMs)
-        1
       }
     }).toList
 

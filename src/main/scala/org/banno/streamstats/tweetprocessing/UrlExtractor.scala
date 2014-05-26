@@ -1,3 +1,10 @@
 package org.banno.streamstats.tweetprocessing
 
-class UrlExtractor extends TweetInfoExtractor {}
+import twitter4j.Status
+
+class UrlExtractor extends TweetInfoExtractor {
+  def extractInfo(status: Status) = {
+    Thread.sleep(10)
+    1
+  }
+}

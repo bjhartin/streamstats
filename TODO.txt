@@ -8,3 +8,5 @@ Handling mutability
 Reporting
 Error Handling (Optional)
 Better typing for the tweet info
+
+Rename *Test to *Spec
