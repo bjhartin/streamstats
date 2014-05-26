@@ -9,7 +9,7 @@ class HashTagExtractorSpec extends BaseSpec {
 
   def extractor = new HashTagExtractor()
 
-  // By using Twitter's hash tag extraction API, I believe I can avoid writing a lot of
+  // By using Twitter's text tag extraction API, I believe I can avoid writing a lot of
   // edge-case tests for hashtag formats.  If interested, you can see the details (and tests)
   // of hashtag format details at
   // https://github.com/twitter/twitter-text-java/tree/master/tests/com/twitter.
