@@ -7,8 +7,7 @@ import scala.concurrent._
 
 case class TweetProcessor(extractors: List[TweetInfoExtractor]) {
   def process(status: Status): TweetInfo = {
-    extractors.map(e => (e.getClass(), future {e.extractInfo(status)})).toMap
+    // Run the tweet information extractors without blocking
+    extractors.map(e => (e.getClass(), Future {e.extractInfo(status)})).toMap
   }
-
-  type TweetInfo = Map[Class[_ <: TweetInfoExtractor], Future[Any]]
 }

@@ -3,3 +3,7 @@
 ** Did not need to write edge-case tests
 * Targeted 1000 tweets/s for all low-level ops
 ** Many of these can be much faster if I simply convert some defs to vals
+
+
+Blocking tps: 2613 real, 35 slow
+Non-blocking tps: 1641 real, 86 slow

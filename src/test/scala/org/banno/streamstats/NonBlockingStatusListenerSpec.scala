@@ -1,42 +1,131 @@
 package org.banno.streamstats
 
-import statistics.{TotalTweets, Statistic}
+import statistics._
+import tweetprocessing._
+import scala.concurrent._
+import ExecutionContext.Implicits.global
+import scala.concurrent.duration._
 import twitter4j.Status
 
 class NonBlockingStatusListenerSpec extends BaseSpec {
-  it should "recompute all registered statistics when a tweet is received from the stream" in {
-    val totalTweets = new TotalTweets()
-    val stats = List(totalTweets)
-    val listener = new NonBlockingStatusListener(stats)
-    val tweet = mock[Status]
+  def tweetInfoExtractors =
+    List(new CountExtractor, new EmojiExtractor, new HashTagExtractor, new UrlExtractor)
 
-    totalTweets.value should be(0) // Sanity check
+  def tweetProcessor = new TweetProcessor(tweetInfoExtractors)
 
-    listener.onStatus(tweet)
-    listener.onStatus(tweet)
+  def statistics = List(new TotalTweets, new TopDomains, new TopEmojis, new TopHashtags, new TweetsWithEmojis, new TweetsWithUrls, new TweetsWithPhotoUrls)
 
-    totalTweets.value should be(2)
+    it should "recompute all registered statistics when a tweet is received from the stream" in {
+      val listener = new NonBlockingStatusListener(tweetProcessor, statistics)
+      val tweet = mock[Status]
+
+      CurrentStats.totalTweets should be(0) // Sanity check
+
+      listener.onStatus(tweet)
+      listener.onStatus(tweet)
+
+      CurrentStats.totalTweets should be(2)
+    }
+
+    it should "run with the real statistics" in {
+      val numberOfTweets = 200
+
+      val listener = new NonBlockingStatusListener(tweetProcessor, statistics)
+      val tweets = (1 to numberOfTweets).map( i => mock[Status])
+      val elapsed = benchmark(tweets.foreach(listener.onStatus(_)))
+
+      println("elapsed ms: " + elapsed)
+      println("tweets/s: " + numberOfTweets / (elapsed / 1000))
+    }
+
+    it should "run with the real statistics 2" in {
+      val numberOfTweets = 200
+
+      val listener = new NonBlockingStatusListener(tweetProcessor, statistics)
+      val tweets = (1 to numberOfTweets).map( i => mock[Status])
+      val elapsed = benchmark(tweets.foreach(listener.onStatus(_)))
+
+      println("elapsed ms: " + elapsed)
+      println("tweets/s: " + numberOfTweets / (elapsed / 1000))
+    }
+
+    it should "run with some really slow stats" in {
+      val numberOfTweets = 200
+      val numberOfStats = 5
+      val timeToComputeAStatInMs = 5
+      val slowStatistics = (1 to numberOfStats).map(i => new Statistic {
+        override def compute(tweetInfo:TweetInfo) = {
+          Thread.sleep(timeToComputeAStatInMs)
+        }
+      }).toList
+      val listener = new NonBlockingStatusListener(tweetProcessor, slowStatistics)
+      val tweets = (1 to numberOfTweets).map( i => mock[Status])
+      val elapsed = benchmark(tweets.foreach(listener.onStatus(_)))
+
+      println("elapsed ms: " + elapsed)
+      println("tweets/s: " + numberOfTweets / (elapsed / 1000))
+    }
+
+  def slow1 = {
+    Thread.sleep(2000); 1
   }
 
-  it should "scale well since it is non-blocking" in {
-    val numberOfStats = 10
-    val numberOfTweets = 50
-    val timeToComputeAStatInMs = 10
+  def slow2 = {
+    Thread.sleep(2000); 2
+  }
 
-    val stats = (1 to numberOfStats).map(i => new Statistic {
-      override def compute(status:Status) = {
-        Thread.sleep(timeToComputeAStatInMs)
+  it should "test async/await 1" in {
+    val elapsed = benchmark {
+      val r1 = slow1
+      val r2 = slow2
+    }
+    println(elapsed)
+
+  }
+
+  it should "test async/await 2" in {
+    val elapsed = benchmark {
+      val f1 = Future {
+        slow1
       }
-    }).toList
+      val f2 = Future {
+        slow2
+      }
+    }
+    println(elapsed)
 
-    // Depends on # of CPU cores, etc.
-    // val expectedTime = (numberOfStats * numberOfTweets * timeToComputeAStatInMs).toDouble
-
-    val listener = new NonBlockingStatusListener(stats)
-    val tweets = (1 to numberOfTweets).map( i => mock[Status])
-    val elapsed = benchmark(tweets.foreach(listener.onStatus(_)))
-
-    println("elapsed ms: " + elapsed)
-    println("tweets/s: " + numberOfTweets / (elapsed / 1000))
   }
+
+  it should "test async/await 3" in {
+    val elapsed = benchmark {
+      val f1 = Future {
+        slow1
+      }
+      val f2 = Future {
+        slow2
+      }
+
+
+      val r1 = Await.result(f1, 20 seconds)
+      val r2 = Await.result(f2, 20 seconds)
+      println(r1 + r2)
+    }
+    println(elapsed)
+  }
+
+  it should "test async/await 5" in {
+    val elapsed = benchmark {
+      val l = List(Future {
+        slow1
+      }, Future {
+        slow2
+      })
+
+      val r = l.map(Await.result(_, 20 seconds))
+      r.foreach(println)
+    }
+
+    println(elapsed)
+  }
+
 }

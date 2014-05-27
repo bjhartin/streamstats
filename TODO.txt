@@ -10,5 +10,7 @@ Error Handling (Optional)
 Better typing for the tweet info
 Fail if JVM encoding not UTF-8
 Handle emoji char ranges
+Figure out if there is something wrong with my futures use
+Cleanup pom and imports
 
 Rename *Test to *Spec

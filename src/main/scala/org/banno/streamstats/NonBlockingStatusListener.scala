@@ -1,22 +1,18 @@
 package org.banno.streamstats
 
 import statistics.Statistic
-import tweetprocessing._
 import tweetprocessing.TweetProcessor
 import twitter4j.{StallWarning, StatusDeletionNotice, Status, StatusListener}
 import scala.concurrent._
 import ExecutionContext.Implicits.global
 import scala.concurrent.duration._
 
-case class NonBlockingStatusListener(statistics:List[Statistic]) extends StatusListener {
-  var computed = 0
-
+case class NonBlockingStatusListener(tweetProcessor:TweetProcessor, statistics:List[Statistic]) extends StatusListener {
   def onStatus(status: Status) {
     // Since implementing java void method, cannot return futures directly and then map over them
-    val futures = statistics.map(s => {future {s.compute(status)}})
+    val futures = statistics.map(s => {Future {s.compute(tweetProcessor.process(status))}})
     futures.foreach(f => {
-      Await.result(f, 200 seconds)
-      computed += 1
+      Await.result(f, 10 seconds)
     })
   }
 
@@ -25,9 +21,4 @@ case class NonBlockingStatusListener(statistics:List[Statistic]) extends StatusL
   def onException(ex: Exception) {throw ex}
   def onScrubGeo(p1: Long, p2: Long) {}
   def onStallWarning(p1: StallWarning) {}
-
-  private def tweetProcessor():TweetProcessor = new TweetProcessor(List(new CountExtractor,
-                                    new EmojiExtractor,
-                                    new HashTagExtractor,
-                                    new UrlExtractor))
 }

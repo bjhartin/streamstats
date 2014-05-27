@@ -34,6 +34,7 @@ class EmojiExtractorSpec extends BaseSpec {
     val tps = tweetsPerSecond(tweets, extractor.extractInfo(status))
     tps should be > 1000.0
     println(s"Tweets/s: $tps")
+    println(s"s/Tweet:${1/tps}")
   }
 
 }
