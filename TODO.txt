@@ -3,11 +3,9 @@ X Blocking listener
 X  Stats
 X Non blocking listener
 Concurrent tweet processing
-Individual stats implementations
-Handling mutability
+X Individual stats implementations
 Reporting
 Error Handling (Optional)
-Better typing for the tweet info
 Fail if JVM encoding not UTF-8
 Handle emoji char ranges
 Figure out if there is something wrong with my futures use

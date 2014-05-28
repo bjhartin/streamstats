@@ -4,6 +4,7 @@
 * Targeted 1000 tweets/s for all low-level ops
 ** Many of these can be much faster if I simply convert some defs to vals
 
+* UTF8
 
 Blocking tps: 676 real, 34 slow  (was 2000/34 before I made the status return text)
 Non-blocking tps: 520 real, 86 slow (was 1600/86 before I made the status return text)

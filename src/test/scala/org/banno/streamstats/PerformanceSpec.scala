@@ -10,8 +10,7 @@ import org.mockito.Mockito._
 class PerformanceSpec extends BaseSpec {
   behavior of "The system overall"
 
-  def tweetInfoExtractors = List(new CountExtractor, new EmojiExtractor, new HashTagExtractor, new UrlExtractor)
-  def tweetProcessor = new TweetProcessor(tweetInfoExtractors)
+  def tweetProcessor = new TweetProcessor(TweetInfoExtractor.all)
 
   before {CurrentStats.reset}
 

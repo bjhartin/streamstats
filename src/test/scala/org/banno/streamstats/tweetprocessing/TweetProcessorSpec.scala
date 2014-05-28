@@ -6,17 +6,17 @@ import org.mockito.Mockito._
 import scala.concurrent.duration._
 import concurrent.Await
 
-class TweetProcessorTest extends BaseSpec {
+class TweetProcessorSpec extends BaseSpec {
   behavior of "A tweet processor"
 
   it should "invoke the extractors and return the result" in {
-    val extractors = List(mock[CountExtractor], mock[EmojiExtractor])
+    val extractors = List(mock[TweetInfoExtractor], mock[TweetInfoExtractor])
     val processor = new TweetProcessor(extractors)
     val status = mock[Status]
     val tweetInfo = processor.process(status)
 
     tweetInfo.size should be(extractors.size)
-    extractors.foreach(verify(_).extractInfo(status))
+    extractors.foreach(verify(_).extract(status))
   }
 
   it should "scale well since it is non-blocking" in {
@@ -24,11 +24,9 @@ class TweetProcessorTest extends BaseSpec {
     val numberOfTweets = 200
     val timeToExtractInfoInMs = 1
 
-    val extractors = (1 to numberOfExtractors).map(i => new TweetInfoExtractor {
-      override def extractInfo(status:Status):Any = {
-        Thread.sleep(timeToExtractInfoInMs)
-      }
-    }).toList
+    val extractors = (1 to numberOfExtractors).map(i => new TweetInfoExtractor("extractor", status =>
+      Thread.sleep(timeToExtractInfoInMs)
+    )).toList
 
     val processor = new TweetProcessor(extractors)
     val tweets = (1 to numberOfTweets).map( i => mock[Status])

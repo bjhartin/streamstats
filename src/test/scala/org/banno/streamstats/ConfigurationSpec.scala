@@ -3,7 +3,7 @@ package org.banno.streamstats
 import org.junit.Test
 import org.junit.Assert._
 
-class ConfigurationTest {
+class ConfigurationSpec {
 
   @Test
   def createConfig() {

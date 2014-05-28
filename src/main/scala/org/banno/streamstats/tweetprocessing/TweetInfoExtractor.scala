@@ -1,7 +1,30 @@
 package org.banno.streamstats.tweetprocessing
 
 import twitter4j.Status
+import com.twitter.Extractor
+import collection.JavaConverters._
 
-trait TweetInfoExtractor {
-  def extractInfo(status:Status): Any
+object TweetInfoExtractor {
+  // By using Twitter's text tag extraction API, I believe I can avoid writing a lot of
+  // edge-case tests for hashtag and url formats.  If interested, you can see the details (and tests)
+  // at https://github.com/twitter/twitter-text-java/tree/master/tests/com/twitter.
+  val twitterTextExtractor = new Extractor()
+
+  def count = TweetInfoExtractor("count", status => 1)
+
+  def emoji = TweetInfoExtractor("emoji", status =>
+    status.getText.map(Emoji.find(_)).flatten.toList
+  )
+
+  def hashtags = TweetInfoExtractor("hashtags", status =>
+    twitterTextExtractor.extractHashtags(status.getText).asScala.toList
+  )
+
+  def urls = TweetInfoExtractor("urls", status =>
+    twitterTextExtractor.extractURLs(status.getText).asScala.toList
+  )
+
+  def all(): List[TweetInfoExtractor] = List(count, emoji, hashtags, urls)
 }
+
+case class TweetInfoExtractor(name: String, extract: Status => Any)

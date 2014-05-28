@@ -10,10 +10,9 @@ class MetricsSpec extends BaseSpec {
   before {CurrentStats.reset}
 
   def tweetInfo(emoji:List[Emoji] = Nil, urls:List[String] = Nil, hashtags: List[String] = Nil) = {
-    Map[Class[_ <: TweetInfoExtractor], Any](
-      classOf[EmojiExtractor] -> emoji,
-      classOf[UrlExtractor] -> urls,
-      classOf[HashTagExtractor] -> hashtags
+    Map("emoji" -> emoji,
+        "urls" -> urls,
+        "hashtags" -> hashtags
     )
   }
 

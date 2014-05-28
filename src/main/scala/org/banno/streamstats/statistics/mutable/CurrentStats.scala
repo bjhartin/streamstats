@@ -39,9 +39,6 @@ object CurrentStats {
     s"totalTweets: $totalTweets\n" +
     s"tweetsWithUrls: $tweetsWithUrls\n" +
     s"tweetsWithPhotoUrls: $tweetsWithPhotoUrls\n" +
-    s"uniqueDomains: $uniqueDomains\n" +
-    s"uniqueHashTags: $uniqueHashTags\n" +
-    s"uniqueEmoji: $uniqueEmoji\n" +
-    s"tweetsPerSecond: $tweetsPerSecond"
+    s"tweetsPerSecond: $tweetsPerSecond\n"
   }
 }

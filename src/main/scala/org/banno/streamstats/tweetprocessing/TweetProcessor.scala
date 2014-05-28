@@ -9,7 +9,7 @@ import scala.concurrent.duration._
 case class TweetProcessor(extractors: List[TweetInfoExtractor]) {
   def process(status: Status): TweetInfo = {
     // Run the tweet information extractors without blocking
-    val futures = extractors.map(e => (e.getClass(), Future {e.extractInfo(status)}))
+    val futures = extractors.map(e => (e.name, Future {e.extract(status)}))
     futures.map(e => (e._1, Await.result(e._2, 10 seconds))).toMap
   }
 }

@@ -8,7 +8,7 @@ object Metrics {
   def trackTweets(ti:TweetInfo) = {CurrentStats.totalTweets +=1} // Can't use _ for some reason
 
   def trackEmojis(ti:TweetInfo) = {
-   (ti(classOf[EmojiExtractor]) match {
+   (ti("emoji") match {
       case Nil => 0
       case emoji:List[Emoji] => {
         CurrentStats.tweetsWithEmojis += 1
@@ -20,7 +20,7 @@ object Metrics {
   }
 
   def trackUrls(ti:TweetInfo) = {
-    (ti(classOf[UrlExtractor]) match {
+    (ti("urls") match {
       case Nil => 0
       case urls:List[String] => {
         CurrentStats.tweetsWithUrls += 1
@@ -34,7 +34,7 @@ object Metrics {
   }
 
   def trackHashTags(ti:TweetInfo) = {
-    (ti(classOf[HashTagExtractor]) match {
+    (ti("hashtags") match {
       case Nil => 0
       case tags:List[String] => {
         tags.foreach(t =>
@@ -47,7 +47,7 @@ object Metrics {
   def all: List[Stat] = List(trackTweets _, trackEmojis _, trackUrls _, trackHashTags _)
 
   private val twitterPhotoRegexp = "http://(pic\\.twitter|instagram)\\.com/.+".r
-  private val urlRegexp = "https?:///.+".r
+
   private def countPhotoUrls(urls:List[String]): Int = {
     urls.foldLeft(0)((count, url) => {
       (if(twitterPhotoRegexp.findFirstIn(url) == None) 0 else 1) + count
