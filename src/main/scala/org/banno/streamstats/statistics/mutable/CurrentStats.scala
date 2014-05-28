@@ -13,9 +13,11 @@ object CurrentStats {
   val hashTagFrequency = collection.mutable.HashMap[String, Int]()
   val domainFrequency = collection.mutable.HashMap[String, Int]()
 
-  def tweetsPerSecond: Double = totalTweets / ((System.currentTimeMillis() - startTime) / 1000)
-  def tweetsPerMinute: Double = tweetsPerSecond / 60
-  def tweetsPerHour: Double = tweetsPerMinute / 60
+  def tweetsPerSecond: Double = totalTweets.toDouble / ((System.currentTimeMillis() - startTime) / 1000)
+  def tweetsPerMinute: Double = tweetsPerSecond.toDouble / 60
+  def tweetsPerHour: Double = tweetsPerMinute.toDouble / 60
+  def percentageOfTweetsWithEmojis: Double = tweetsWithEmojis.toDouble / totalTweets
+  def percentageOfTweetsWithUrls: Double = tweetsWithUrls.toDouble / totalTweets
 
   def reset() {
     totalTweets = 0
