@@ -19,6 +19,9 @@ object CurrentStats {
   def percentageOfTweetsWithEmojis: Double = tweetsWithEmojis.toDouble / totalTweets
   def percentageOfTweetsWithUrls: Double = tweetsWithUrls.toDouble / totalTweets
   def percentageOfTweetsWithPhotoUrls: Double = tweetsWithPhotoUrls.toDouble / totalTweets
+  def uniqueEmoji:Int = emojiFrequency.size
+  def uniqueDomains:Int = domainFrequency.size
+  def uniqueHashTags:Int = hashTagFrequency.size
 
   def reset() {
     totalTweets = 0
@@ -30,5 +33,15 @@ object CurrentStats {
     emojiFrequency.clear()
     hashTagFrequency.clear()
     domainFrequency.clear()
+  }
+
+  override def toString():String = {
+    s"totalTweets: $totalTweets\n" +
+    s"tweetsWithUrls: $tweetsWithUrls\n" +
+    s"tweetsWithPhotoUrls: $tweetsWithPhotoUrls\n" +
+    s"uniqueDomains: $uniqueDomains\n" +
+    s"uniqueHashTags: $uniqueHashTags\n" +
+    s"uniqueEmoji: $uniqueEmoji\n" +
+    s"tweetsPerSecond: $tweetsPerSecond"
   }
 }

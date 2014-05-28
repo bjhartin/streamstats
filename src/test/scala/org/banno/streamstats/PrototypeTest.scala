@@ -8,8 +8,8 @@ class PrototypeTest {
     var tweetsReceived = 0
 
     def onStatus(status: Status) {
-      println("-" * 100)
-      println(status.getText)
+//      println("-" * 100)
+//      println(status.getText)
       tweetsReceived += 1
     }
     def onDeletionNotice(statusDeletionNotice: StatusDeletionNotice) {}
