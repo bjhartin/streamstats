@@ -2,10 +2,9 @@ X Mocking library - needed for Status at first
 X Blocking listener
 X  Stats
 X Non blocking listener
-Concurrent tweet processing
+X Rename *Test to *Spec
 X Individual stats implementations
 Reporting
-Error Handling (Optional)
 Fail if JVM encoding not UTF-8
 Handle emoji char ranges
 Figure out if there is something wrong with my futures use
@@ -15,4 +14,3 @@ Consider Futures.sequence (http://stackoverflow.com/questions/13097754/asynchron
 Do we really want the type alias?
   Can we do something better than the map?
 Can we remove mutability (CurrentStats)?  This is probably not safe with parallel tests.
-Rename *Test to *Spec

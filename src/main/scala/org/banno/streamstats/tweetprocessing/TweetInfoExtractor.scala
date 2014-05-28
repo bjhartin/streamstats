@@ -27,4 +27,6 @@ object TweetInfoExtractor {
   def all(): List[TweetInfoExtractor] = List(count, emoji, hashtags, urls)
 }
 
-case class TweetInfoExtractor(name: String, extract: Status => Any)
+case class TweetInfoExtractor(name: String, extractor: Status => Any) {
+  def extract(status:Status):Any = extractor(status)
+}

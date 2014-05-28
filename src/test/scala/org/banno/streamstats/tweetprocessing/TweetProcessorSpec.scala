@@ -10,13 +10,13 @@ class TweetProcessorSpec extends BaseSpec {
   behavior of "A tweet processor"
 
   it should "invoke the extractors and return the result" in {
-    val extractors = List(mock[TweetInfoExtractor], mock[TweetInfoExtractor])
+    val extractors = List(mock[TweetInfoExtractor])
     val processor = new TweetProcessor(extractors)
     val status = mock[Status]
     val tweetInfo = processor.process(status)
 
-    tweetInfo.size should be(extractors.size)
     extractors.foreach(verify(_).extract(status))
+    tweetInfo.size should be(1)
   }
 
   it should "scale well since it is non-blocking" in {
