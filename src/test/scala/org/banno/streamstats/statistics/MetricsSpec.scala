@@ -67,7 +67,7 @@ class MetricsSpec extends BaseSpec {
   it should "Compute percentage of tweets with emojis" in {
     CurrentStats.totalTweets = 4
     CurrentStats.tweetsWithEmojis = 2
-    CurrentStats.percentageOfTweetsWithEmojis should be(0.5 +- 0.0001)
+    CurrentStats.percentageOfTweetsWithEmoji should be(0.5 +- 0.0001)
   }
 
   it should "Track number of tweets with urls" in {
