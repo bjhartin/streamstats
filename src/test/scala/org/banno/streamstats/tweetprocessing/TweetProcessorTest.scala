@@ -9,46 +9,35 @@ import concurrent.Await
 class TweetProcessorTest extends BaseSpec {
   behavior of "A tweet processor"
 
-  it should "return futures which invoke the registered tweet info extractors" in {
+  it should "invoke the extractors and return the result" in {
     val extractors = List(mock[CountExtractor], mock[EmojiExtractor])
     val processor = new TweetProcessor(extractors)
     val status = mock[Status]
     val tweetInfo = processor.process(status)
-    val futures = tweetInfo.values
 
-    futures.size should be(extractors.size)
-    futures.foreach(Await.result(_, 1 second))
+    tweetInfo.size should be(extractors.size)
     extractors.foreach(verify(_).extractInfo(status))
   }
 
   it should "scale well since it is non-blocking" in {
     val numberOfExtractors = 10
-    val numberOfTweets = 50
-    val timeToExtractInfoInMs = 10
-
-    val pattern = """(\d{3}) (\d{3}) (\d{4})""".r
+    val numberOfTweets = 200
+    val timeToExtractInfoInMs = 1
 
     val extractors = (1 to numberOfExtractors).map(i => new TweetInfoExtractor {
       override def extractInfo(status:Status):Any = {
-//        (1 to 50).foreach(i =>
-//          pattern.findAllIn("fdijfjadljfa 319 329 9531 fdsajfdslfd;lads 319 329 7961 fdijfjadljfa 319 329 9531 fdsajfdslfd;lads 319 329 7961 fdijfjadljfa 319 329 9531 fdsajfdslfd;lads 319 329 7961 fdijfjadljfa 319 329 9531 fdsajfdslfd;lads 319 329 7961 fdijfjadljfa 319 329 9531 fdsajfdslfd;lads 319 329 7961 fdijfjadljfa 319 329 9531 fdsajfdslfd;lads 319 329 7961")
-//        )
         Thread.sleep(timeToExtractInfoInMs)
       }
     }).toList
 
-    // Depends on # of CPU cores, etc.
-    // val expectedTime = (numberOfStats * numberOfTweets * timeToComputeAStatInMs) / ?
-
     val processor = new TweetProcessor(extractors)
     val tweets = (1 to numberOfTweets).map( i => mock[Status])
     val elapsed = benchmark({
-      val results = tweets.map(processor.process(_))
-      results.foreach(r => r.values.foreach(Await.result(_, 200 seconds)))
+      tweets.foreach(processor.process(_))
     })
 
     println("elapsed ms: " + elapsed)
     println("tweets/s: " + numberOfTweets / (elapsed / 1000))
 
-    }
+  }
 }

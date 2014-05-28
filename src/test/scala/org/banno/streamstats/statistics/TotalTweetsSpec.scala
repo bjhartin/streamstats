@@ -11,7 +11,7 @@ class TotalTweetsSpec extends BaseSpec {
   before {CurrentStats.reset}
 
   it should "Increment the number of total tweets" in {
-    val tweetInfo = mock[Map[Class[_ <: TweetInfoExtractor], Future[Any]]]
+    val tweetInfo = mock[Map[Class[_ <: TweetInfoExtractor], Any]]
     new TotalTweets().compute(tweetInfo)
     new TotalTweets().compute(tweetInfo)
     CurrentStats.totalTweets should be(2)
