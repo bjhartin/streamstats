@@ -4,8 +4,9 @@ import org.banno.streamstats.tweetprocessing.Emoji
 
 object CurrentStats {
   var totalTweets = 0
-  var urlCount = 0
-  var photoUrlCount = 0
+  var tweetsWithUrls = 0
+  var tweetsWithPhotoUrls = 0
+  var tweetsWithEmojis = 0
   var startTime = System.currentTimeMillis()
 
   val emojiFrequency =  collection.mutable.HashMap[Emoji, Int]()
@@ -18,8 +19,9 @@ object CurrentStats {
 
   def reset() {
     totalTweets = 0
-    urlCount = 0
-    photoUrlCount = 0
+    tweetsWithUrls = 0
+    tweetsWithEmojis = 0
+    tweetsWithPhotoUrls = 0
 
     startTime = System.currentTimeMillis()
     emojiFrequency.clear()

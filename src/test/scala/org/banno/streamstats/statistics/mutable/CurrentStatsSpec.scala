@@ -11,8 +11,9 @@ class CurrentStatsSpec extends BaseSpec {
     CurrentStats.domainFrequency.put("http://google.com", 1)
     CurrentStats.emojiFrequency.put(Emoji.allEmoji.values.head, 1)
     CurrentStats.hashTagFrequency.put("awesome", 1)
-    CurrentStats.photoUrlCount = 1
-    CurrentStats.urlCount = 3
+    CurrentStats.tweetsWithPhotoUrls = 1
+    CurrentStats.tweetsWithUrls = 3
+    CurrentStats.tweetsWithEmojis = 1
     val startTime = CurrentStats.startTime
 
     CurrentStats.reset()
@@ -21,7 +22,8 @@ class CurrentStatsSpec extends BaseSpec {
     CurrentStats.domainFrequency.size should be(0)
     CurrentStats.emojiFrequency.size should be(0)
     CurrentStats.hashTagFrequency.size should be(0)
-    CurrentStats.photoUrlCount should be(0)
-    CurrentStats.urlCount should be(0)
+    CurrentStats.tweetsWithPhotoUrls should be(0)
+    CurrentStats.tweetsWithUrls should be(0)
+    CurrentStats.tweetsWithEmojis should be(0)
   }
 }
