@@ -12,5 +12,9 @@ Fail if JVM encoding not UTF-8
 Handle emoji char ranges
 Figure out if there is something wrong with my futures use
 Cleanup pom and imports
-
+Add assertions for times in tests
+Consider Futures.sequence (http://stackoverflow.com/questions/13097754/asynchronous-io-in-scala-with-futures)
+Do we really want the type alias?
+  Can we do something better than the map?
+Can we remove mutability?
 Rename *Test to *Spec
