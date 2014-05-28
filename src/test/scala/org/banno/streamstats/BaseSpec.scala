@@ -1,9 +1,9 @@
 package org.banno.streamstats
 
-import org.scalatest.{Matchers, FlatSpec}
+import org.scalatest.{BeforeAndAfter, Matchers, FlatSpec}
 import org.scalatest.mock.MockitoSugar
 
-class BaseSpec extends FlatSpec with Matchers with MockitoSugar
+class BaseSpec extends FlatSpec with Matchers with MockitoSugar with BeforeAndAfter
 {
   def benchmark(f: => Any):Double = {
     val start = System.nanoTime()

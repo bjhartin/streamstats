@@ -1,10 +1,8 @@
 package org.banno.streamstats
 
 import statistics._
+import mutable.CurrentStats
 import tweetprocessing._
-import scala.concurrent._
-import ExecutionContext.Implicits.global
-import scala.concurrent.duration._
 import org.mockito.Mockito._
 import twitter4j.Status
 
@@ -19,7 +17,6 @@ class NonBlockingStatusListenerSpec extends BaseSpec {
     when(mockTweet.getText).thenReturn("\u2708 and \u270F and #tag1 and #tag2 and http://url1 and http://url2")
     mockTweet
   }
-
 
   def statistics = List(new TotalTweets, new TopDomains, new TopEmojis, new TopHashtags, new TweetsWithEmojis, new TweetsWithUrls, new TweetsWithPhotoUrls)
 
@@ -53,20 +50,20 @@ class NonBlockingStatusListenerSpec extends BaseSpec {
     println("tweets/s: " + numberOfTweets / (elapsed / 1000))
   }
 
-  it should "run with some really slow stats" in {
-    val numberOfTweets = 200
-    val numberOfStats = 5
-    val timeToComputeAStatInMs = 5
-    val slowStatistics = (1 to numberOfStats).map(i => new Statistic {
-      override def compute(tweetInfo: TweetInfo) = {
-        Thread.sleep(timeToComputeAStatInMs)
-      }
-    }).toList
-    val listener = new NonBlockingStatusListener(tweetProcessor, slowStatistics)
-    val tweets = (1 to numberOfTweets).map(i => status)
-    val elapsed = benchmark(tweets.foreach(listener.onStatus(_)))
-
-    println("elapsed ms: " + elapsed)
-    println("tweets/s: " + numberOfTweets / (elapsed / 1000))
-  }
+//  it should "run with some really slow stats" in {
+//    val numberOfTweets = 200
+//    val numberOfStats = 5
+//    val timeToComputeAStatInMs = 5
+//    val slowStatistics = (1 to numberOfStats).map(i => new Statistic {
+//      override def compute(tweetInfo: TweetInfo) = {
+//        Thread.sleep(timeToComputeAStatInMs)
+//      }
+//    }).toList
+//    val listener = new NonBlockingStatusListener(tweetProcessor, slowStatistics)
+//    val tweets = (1 to numberOfTweets).map(i => status)
+//    val elapsed = benchmark(tweets.foreach(listener.onStatus(_)))
+//
+//    println("elapsed ms: " + elapsed)
+//    println("tweets/s: " + numberOfTweets / (elapsed / 1000))
+//  }
 }

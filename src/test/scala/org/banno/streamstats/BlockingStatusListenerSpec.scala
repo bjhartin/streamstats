@@ -1,6 +1,7 @@
 package org.banno.streamstats
 
 import statistics._
+import mutable.CurrentStats
 import tweetprocessing._
 import tweetprocessing.TweetProcessor
 import twitter4j.Status
@@ -53,20 +54,20 @@ class BlockingStatusListenerSpec extends BaseSpec {
     println("tweets/s: " + numberOfTweets / (elapsed / 1000))
   }
 
-  it should "run with some really slow stats" in {
-    val numberOfTweets = 200
-    val numberOfStats = 5
-    val timeToComputeAStatInMs = 5
-    val slowStatistics = (1 to numberOfStats).map(i => new Statistic {
-      override def compute(tweetInfo:TweetInfo) = {
-        Thread.sleep(timeToComputeAStatInMs)
-      }
-    }).toList
-    val listener = new BlockingStatusListener(tweetProcessor, slowStatistics)
-    val tweets = (1 to numberOfTweets).map( i => status)
-    val elapsed = benchmark(tweets.foreach(listener.onStatus(_)))
-
-    println("elapsed ms: " + elapsed)
-    println("tweets/s: " + numberOfTweets / (elapsed / 1000))
-  }
+//  it should "run with some really slow stats" in {
+//    val numberOfTweets = 200
+//    val numberOfStats = 5
+//    val timeToComputeAStatInMs = 5
+//    val slowStatistics = (1 to numberOfStats).map(i => new Statistic {
+//      override def compute(tweetInfo:TweetInfo) = {
+//        Thread.sleep(timeToComputeAStatInMs)
+//      }
+//    }).toList
+//    val listener = new BlockingStatusListener(tweetProcessor, slowStatistics)
+//    val tweets = (1 to numberOfTweets).map( i => status)
+//    val elapsed = benchmark(tweets.foreach(listener.onStatus(_)))
+//
+//    println("elapsed ms: " + elapsed)
+//    println("tweets/s: " + numberOfTweets / (elapsed / 1000))
+//  }
 }

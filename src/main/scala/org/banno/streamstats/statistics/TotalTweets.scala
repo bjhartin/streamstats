@@ -1,6 +1,6 @@
 package org.banno.streamstats.statistics
 
-import twitter4j.Status
+import mutable.CurrentStats
 import org.banno.streamstats.tweetprocessing.TweetInfo
 
 class TotalTweets extends Statistic {
