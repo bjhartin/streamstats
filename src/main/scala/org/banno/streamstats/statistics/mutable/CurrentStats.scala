@@ -42,7 +42,7 @@ object CurrentStats {
   }
 
   override def toString():String = {
-    s"totalTweets: $totalTweets\n" +
+    (s"totalTweets: $totalTweets\n" +
     ("percentageOfTweetsWithUrls: %.1f%%\n" format percentageOfTweetsWithUrls * 100) +
     ("percentageOfTweetsWithPhotoUrls: %.1f%%\n" format percentageOfTweetsWithPhotoUrls * 100) +
     ("percentageOfTweetsWithEmoji: %.1f%%\n" format percentageOfTweetsWithEmoji * 100) +
@@ -50,7 +50,7 @@ object CurrentStats {
     s"top3Hashtags: ${top3Hashtags.map(e => e._1 + " (" + e._2 + ")").mkString(", ")}\n" +
     s"top3Domains: ${top3Domains.map(e => e._1 + " (" + e._2 + ")").mkString(", ")}\n" +
     s"startTime: ${timeFormat.format(startTime)}\n" +
-    ("tweetsPerSecond: %.1f" format tweetsPerSecond)
+    ("tweetsPerSecond: %.1f" format tweetsPerSecond)).replaceAll("NaN", "0.0")
   }
 
   private def topN[T](map:collection.mutable.HashMap[T, Int], n:Int) = map.toList.sortBy(_._2).reverse.take(n)
