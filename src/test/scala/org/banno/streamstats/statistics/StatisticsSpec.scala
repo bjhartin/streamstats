@@ -24,6 +24,16 @@ class StatisticsSpec extends BaseSpec {
     CurrentStats.totalTweets should be(2)
   }
 
+  it should "Compute percentage of tweets per hour, minute and second" in {
+    Thread.sleep(1000)
+    CurrentStats.totalTweets = 4
+
+    val tps = CurrentStats.tweetsPerSecond
+    tps should be(4.0 +- 0.0001)
+    CurrentStats.tweetsPerMinute should be (4.0/60 +- 0.0001)
+    CurrentStats.tweetsPerHour should be (4.0/(60*60) +- 0.0001)
+  }
+
   it should "Track number of tweets with emojis" in {
     val emoji1 = Emoji.allEmoji(0x00AE)
     val emoji2 = Emoji.allEmoji(0x00AE)
@@ -55,15 +65,23 @@ class StatisticsSpec extends BaseSpec {
     CurrentStats.percentageOfTweetsWithUrls should be(0.5 +- 0.0001)
   }
 
-  it should "Compute percentage of tweets per hour, minute and second" in {
-    Thread.sleep(1000)
-    CurrentStats.totalTweets = 4
 
-    val tps = CurrentStats.tweetsPerSecond
-    tps should be(4.0 +- 0.0001)
-    CurrentStats.tweetsPerMinute should be (4.0/60 +- 0.0001)
-    CurrentStats.tweetsPerHour should be (4.0/(60*60) +- 0.0001)
+
+  it should "Track number of tweets with photo urls" in {
+    val s = Statistics.tweetsWithPhotoUrls _
+    s(tweetInfo(Nil, List("http://notapicture")))
+    s(tweetInfo(Nil, List("http://pic.twitter.com")))
+    s(tweetInfo(Nil, List("http://pic.twitter.com/pic1")))
+    s(tweetInfo(Nil, List("http://instagram.com/pic2")))
+    CurrentStats.tweetsWithPhotoUrls should be(2)
   }
+
+  it should "Compute percentage of tweets with photo urls" in {
+    CurrentStats.totalTweets = 4
+    CurrentStats.tweetsWithPhotoUrls = 2
+    CurrentStats.percentageOfTweetsWithPhotoUrls should be(0.5 +- 0.0001)
+  }
+
 
 
 

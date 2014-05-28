@@ -18,6 +18,7 @@ object CurrentStats {
   def tweetsPerHour: Double = tweetsPerMinute.toDouble / 60
   def percentageOfTweetsWithEmojis: Double = tweetsWithEmojis.toDouble / totalTweets
   def percentageOfTweetsWithUrls: Double = tweetsWithUrls.toDouble / totalTweets
+  def percentageOfTweetsWithPhotoUrls: Double = tweetsWithPhotoUrls.toDouble / totalTweets
 
   def reset() {
     totalTweets = 0
