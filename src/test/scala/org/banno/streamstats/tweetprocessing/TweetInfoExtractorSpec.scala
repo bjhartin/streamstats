@@ -4,7 +4,7 @@ import org.banno.streamstats.BaseSpec
 import twitter4j.Status
 import org.mockito.Mockito._
 
-class TweetInfoExtractorsSpec extends BaseSpec {
+class TweetInfoExtractorSpec extends BaseSpec {
   it should "return 1 for the count" in {
     TweetInfoExtractor.count.extract(mock[Status]) should be(1)
   }
