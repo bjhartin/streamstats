@@ -4,13 +4,13 @@ X  Stats
 X Non blocking listener
 X Rename *Test to *Spec
 X Individual stats implementations
-Reporting
+X Reporting
 Fail if JVM encoding not UTF-8
-Handle emoji char ranges
-Figure out if there is something wrong with my futures use
 Cleanup pom and imports
+Figure out if there is something wrong with my futures use
 Add assertions for times in tests
 Consider Futures.sequence (http://stackoverflow.com/questions/13097754/asynchronous-io-in-scala-with-futures)
 Do we really want the type alias?
   Can we do something better than the map?
 Can we remove mutability (CurrentStats)?  This is probably not safe with parallel tests.
+Handle emoji char ranges

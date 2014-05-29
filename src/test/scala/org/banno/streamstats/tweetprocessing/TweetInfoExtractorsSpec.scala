@@ -10,10 +10,6 @@ class TweetInfoExtractorsSpec extends BaseSpec {
     TweetInfoExtractor.count.extract(mock[Status]) should be(1)
   }
 
-  it should "ensure JVM using UTF-8 encoding" in {
-    System.getProperty("file.encoding") should be("UTF-8")
-  }
-
   it should "extract all emojis from a tweet" in {
     val status = mock[Status]
     when(status.getText).thenReturn("This is a tweet with two emojis \u2708 and \u270F")
