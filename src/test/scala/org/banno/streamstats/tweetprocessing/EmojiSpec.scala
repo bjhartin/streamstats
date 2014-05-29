@@ -1,8 +1,6 @@
 package org.banno.streamstats.tweetprocessing
 
 import org.banno.streamstats.BaseSpec
-import twitter4j.Status
-import org.mockito.Mockito._
 
 class EmojiSpec extends BaseSpec {
   behavior of "An Emoji"
