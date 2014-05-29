@@ -104,6 +104,10 @@
                 </executions>
                 <configuration>
                     <scalaVersion>2.11.1</scalaVersion>
+                    <args>
+                        <arg>-unchecked</arg>
+                        <arg>-deprecation</arg>
+                    </args>
                 </configuration>
             </plugin>
         </plugins>
