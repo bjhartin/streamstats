@@ -7,6 +7,7 @@
 * Commented out tests
 * UTF8
 * Use of slow metrics to overcome overhead and false indicators
+* Only look for unified emoji codes
 
 Blocking tps: 730 (was 2000 before I made the status return text)
 Non-blocking tps: 600 (was 1600 before I made the status return text)

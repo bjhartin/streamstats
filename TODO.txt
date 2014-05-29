@@ -12,10 +12,8 @@ Handle errors in futures (and other places?)
 Unit tests for listeners / other missing tests
 Wire in main class
 
-Figure out if there is something wrong with my futures use
-  Consider Futures.sequence (http://stackoverflow.com/questions/13097754/asynchronous-io-in-scala-with-futures)
 Add assertions for times in tests
 Do we really want the type alias?
   Can we do something better than the map?
 Can we remove mutability (CurrentStats)?  This is probably not safe with parallel tests.
-Handle emoji char ranges
+? Handle emoji char ranges

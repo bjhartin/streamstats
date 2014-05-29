@@ -18,24 +18,4 @@ class TweetProcessorSpec extends BaseSpec {
     extractors.foreach(verify(_).extract(status))
     tweetInfo.size should be(1)
   }
-
-  it should "scale well since it is non-blocking" in {
-    val numberOfExtractors = 10
-    val numberOfTweets = 200
-    val timeToExtractInfoInMs = 1
-
-    val extractors = (1 to numberOfExtractors).map(i => new TweetInfoExtractor("extractor", status =>
-      Thread.sleep(timeToExtractInfoInMs)
-    )).toList
-
-    val processor = new TweetProcessor(extractors)
-    val tweets = (1 to numberOfTweets).map( i => mock[Status])
-    val elapsed = benchmark({
-      tweets.foreach(processor.process(_))
-    })
-
-    println("elapsed ms: " + elapsed)
-    println("tweets/s: " + numberOfTweets / (elapsed / 1000))
-
-  }
 }

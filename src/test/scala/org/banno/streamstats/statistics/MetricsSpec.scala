@@ -28,9 +28,9 @@ class MetricsSpec extends BaseSpec {
     CurrentStats.totalTweets = 4
 
     val tps = CurrentStats.tweetsPerSecond
-    tps should be(4.0 +- 0.01)
-    CurrentStats.tweetsPerMinute should be (4.0/60 +- 0.01)
-    CurrentStats.tweetsPerHour should be (4.0/(60*60) +- 0.01)
+    tps should be(4.0 +- 0.1)
+    CurrentStats.tweetsPerMinute should be (4.0/60 +- 0.1)
+    CurrentStats.tweetsPerHour should be (4.0/(60*60) +- 0.1)
   }
 
   it should "Track number of tweets with emojis" in {

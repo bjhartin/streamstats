@@ -96,7 +96,7 @@ class PerformanceSpec extends BaseSpec {
   def testAgainstRealStream(listener: StatusListener, wait: () => Any = () => {}):Double = {
     val twitterStream = new TwitterStreamFactory(Configuration.create).getInstance
     twitterStream.addListener(listener)
-    println("Beginning to sample for ten seconds...")
+    println("Beginning to sample for five seconds...")
     twitterStream.sample
     Thread.sleep(5000)
     println("Cleaning up and shutting down")

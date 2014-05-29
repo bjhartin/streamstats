@@ -830,6 +830,9 @@ object Emoji {
     Emoji(0x1F6C4.toChar, "BAGGAGE CLAIM"),
     Emoji(0x1F6C5.toChar, "LEFT LUGGAGE")).map(e => (e.char, e)).toMap
 
+//    Not sure what it means when the code has a hyphen -  Alternates?  Two character sequences?  Research did not turn
+//    anything up.
+//
 //    Emoji(0x0023-20E3.toChar, "HASH KEY"),
 //    Emoji(0x0030-20E3.toChar, "KEYCAP 0"),
 //    Emoji(0x0031-20E3.toChar, "KEYCAP 1"),
@@ -840,9 +843,7 @@ object Emoji {
 //    Emoji(0x0036-20E3.toChar, "KEYCAP 6"),
 //    Emoji(0x0037-20E3.toChar, "KEYCAP 7"),
 //    Emoji(0x0038-20E3.toChar, "KEYCAP 8"),
-//    Emoji(0x0039-20E3.toChar, "KEYCAP 9")
-
-//    ,
+//    Emoji(0x0039-20E3.toChar, "KEYCAP 9"),
 //    Emoji(0x1F1E8-1F1F3.toChar, "REGIONAL INDICATOR SYMBOL LETTERS CN"),
 //    Emoji(0x1F1E9-1F1EA.toChar, "REGIONAL INDICATOR SYMBOL LETTERS DE"),
 //    Emoji(0x1F1EA-1F1F8.toChar, "REGIONAL INDICATOR SYMBOL LETTERS ES"),
