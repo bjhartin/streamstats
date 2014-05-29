@@ -69,7 +69,8 @@ class PerformanceSpec extends BaseSpec {
 
 
     println("elapsed ms: " + elapsed)
-    println("tweets/s: " + numberOfTweets / (elapsed / 1000))
-    elapsed
+    val tps = numberOfTweets / (elapsed / 1000)
+    println("tweets/s: " + tps)
+    tps
   }
 }

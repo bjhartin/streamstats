@@ -7,5 +7,5 @@
 * Commented out tests
 * UTF8
 
-Blocking tps: 676 real, 34 slow  (was 2000/34 before I made the status return text)
-Non-blocking tps: 520 real, 86 slow (was 1600/86 before I made the status return text)
+Blocking tps: 730 (was 2000 before I made the status return text)
+Non-blocking tps: 600 (was 1600 before I made the status return text)
