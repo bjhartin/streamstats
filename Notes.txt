@@ -6,6 +6,14 @@
 
 * Commented out tests
 * UTF8
+* Use of slow metrics to overcome overhead and false indicators
 
 Blocking tps: 730 (was 2000 before I made the status return text)
 Non-blocking tps: 600 (was 1600 before I made the status return text)
+
+
+140/322/41 nblock/nblock2/block with parallelization of stats and extractors
+
+142/312/41 nblock/nblock2/block on slow stats with no parallelization of stats for nblock2
+
+149/142/41 nblock/nblock2/block on slow stats with no parallelization of stats for nblock2 or extractors for anyone

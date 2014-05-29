@@ -5,16 +5,19 @@ import org.banno.streamstats.tweetprocessing._
 import java.net.URI
 
 object Metrics {
-  def trackTweets(ti:TweetInfo) = {CurrentStats.totalTweets +=1} // Can't use _ for some reason
+  def trackTweets(ti:TweetInfo) = {
+    synchronized {CurrentStats.totalTweets += 1}} // Can't use _ for some reason
 
   def trackEmojis(ti:TweetInfo) = {
-   (ti("emoji") match {
-      case Nil => 0
+    (ti("emoji") match {
+      case Nil =>
       case emoji:List[Emoji] => {
-        CurrentStats.tweetsWithEmojis += 1
-        emoji.foreach(e =>
-          CurrentStats.emojiFrequency(e) = CurrentStats.emojiFrequency.getOrElse(e, 0) + 1
-        )
+        synchronized {
+          CurrentStats.tweetsWithEmojis += 1
+          emoji.foreach(e =>
+            CurrentStats.emojiFrequency(e) = CurrentStats.emojiFrequency.getOrElse(e, 0) + 1
+          )
+        }
       }
     })
   }
@@ -23,12 +26,14 @@ object Metrics {
     (ti("urls") match {
       case Nil => 0
       case urls:List[String] => {
-        CurrentStats.tweetsWithUrls += 1
-        CurrentStats.tweetsWithPhotoUrls += countPhotoUrls(urls)
-        urls.map(extractDomain).foreach(d => {
-           CurrentStats.domainFrequency(d) = CurrentStats.domainFrequency.getOrElse(d, 0) + 1
-          }
-        )
+        synchronized {
+          CurrentStats.tweetsWithUrls += 1
+          CurrentStats.tweetsWithPhotoUrls += countPhotoUrls(urls)
+          urls.map(extractDomain).foreach(d => {
+             CurrentStats.domainFrequency(d) = CurrentStats.domainFrequency.getOrElse(d, 0) + 1
+            }
+          )
+        }
       }
     })
   }
@@ -38,7 +43,9 @@ object Metrics {
       case Nil => 0
       case tags:List[String] => {
         tags.foreach(t =>
-          CurrentStats.hashTagFrequency(t) = CurrentStats.hashTagFrequency.getOrElse(t, 0) + 1
+          synchronized {
+            CurrentStats.hashTagFrequency(t) = CurrentStats.hashTagFrequency.getOrElse(t, 0) + 1
+          }
         )
       }
     })

@@ -11,7 +11,6 @@ object CurrentStats {
   var startTime = System.currentTimeMillis()
   val timeFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss")
 
-
   val emojiFrequency =  collection.mutable.HashMap[Emoji, Int]()
   val hashTagFrequency = collection.mutable.HashMap[String, Int]()
   val domainFrequency = collection.mutable.HashMap[String, Int]()
