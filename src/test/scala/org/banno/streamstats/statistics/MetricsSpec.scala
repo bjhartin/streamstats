@@ -28,9 +28,9 @@ class MetricsSpec extends BaseSpec {
     CurrentStats.totalTweets = 4
 
     val tps = CurrentStats.tweetsPerSecond
-    tps should be(4.0 +- 0.001)
-    CurrentStats.tweetsPerMinute should be (4.0/60 +- 0.001)
-    CurrentStats.tweetsPerHour should be (4.0/(60*60) +- 0.001)
+    tps should be(4.0 +- 0.01)
+    CurrentStats.tweetsPerMinute should be (4.0/60 +- 0.01)
+    CurrentStats.tweetsPerHour should be (4.0/(60*60) +- 0.01)
   }
 
   it should "Track number of tweets with emojis" in {
@@ -67,7 +67,7 @@ class MetricsSpec extends BaseSpec {
   it should "Compute percentage of tweets with emojis" in {
     CurrentStats.totalTweets = 4
     CurrentStats.tweetsWithEmojis = 2
-    CurrentStats.percentageOfTweetsWithEmoji should be(0.5 +- 0.0001)
+    CurrentStats.percentageOfTweetsWithEmoji should be(0.5 +- 0.01)
   }
 
   it should "Track number of tweets with urls" in {
@@ -83,7 +83,7 @@ class MetricsSpec extends BaseSpec {
   it should "Compute percentage of tweets with urls" in {
     CurrentStats.totalTweets = 4
     CurrentStats.tweetsWithUrls = 2
-    CurrentStats.percentageOfTweetsWithUrls should be(0.5 +- 0.0001)
+    CurrentStats.percentageOfTweetsWithUrls should be(0.5 +- 0.01)
   }
 
   it should "Track number of tweets with photo urls" in {
@@ -100,7 +100,7 @@ class MetricsSpec extends BaseSpec {
   it should "Compute percentage of tweets with photo urls" in {
     CurrentStats.totalTweets = 4
     CurrentStats.tweetsWithPhotoUrls = 2
-    CurrentStats.percentageOfTweetsWithPhotoUrls should be(0.5 +- 0.0001)
+    CurrentStats.percentageOfTweetsWithPhotoUrls should be(0.5 +- 0.01)
   }
 
   it should "Track domain frequency" in {

@@ -5,7 +5,8 @@ X Non blocking listener
 X Rename *Test to *Spec
 X Individual stats implementations
 X Reporting
-Fail if JVM encoding not UTF-8
+X Fail if JVM encoding not UTF-8
+Wire in main class
 Cleanup pom and imports
 Figure out if there is something wrong with my futures use
 Add assertions for times in tests
