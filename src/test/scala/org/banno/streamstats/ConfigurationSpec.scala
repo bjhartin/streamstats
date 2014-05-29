@@ -3,11 +3,11 @@ package org.banno.streamstats
 import org.junit.Test
 import org.junit.Assert._
 
-class ConfigurationSpec {
+class ConfigurationSpec extends BaseSpec {
+  behavior of "The configuration"
 
-  @Test
-  def createConfig() {
+  it should "create a configuration" in {
     val config = Configuration.create
-    assertTrue(config.isInstanceOf[twitter4j.conf.Configuration])
+     config shouldBe a [twitter4j.conf.Configuration]
   }
 }
