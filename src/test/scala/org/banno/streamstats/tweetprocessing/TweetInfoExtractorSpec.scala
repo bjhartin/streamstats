@@ -53,4 +53,10 @@ class TweetInfoExtractorSpec extends BaseSpec {
     when(status.getURLEntities()).thenReturn(Array[URLEntity]())
     TweetInfoExtractor.urls.extract(status) should be(Nil)
   }
+
+  it should "not fail when urls are null" in { // Can happen due to twitter API internals
+    val status = mock[Status]
+    when(status.getURLEntities()).thenReturn(null)
+    TweetInfoExtractor.urls.extract(status) should be(Nil)
+  }
 }
