@@ -16,9 +16,9 @@ class NonBlockingStatusListenerSpec extends BaseSpec {
 
   it should "process a Status without blocking" in {
     val tweetProcessor = mock[TweetProcessor]
-    val metric1 = mock[Function1[TweetInfo, Unit]]
+    val statistic1 = mock[Function1[TweetInfo, Unit]]
     val status = mock[Status]
-    val listener = new NonBlockingStatusListener(tweetProcessor, List(metric1))
+    val listener = new NonBlockingStatusListener(tweetProcessor, List(statistic1))
     val tweetInfo = mock[TweetInfo]
 
     // Need to delay the response of the tweet processor so that we can
@@ -34,12 +34,12 @@ class NonBlockingStatusListenerSpec extends BaseSpec {
 
     // onStatus returned without blocking
     listener.statusProcessingFutures.head.isCompleted should be(false)
-    verify(metric1, never()).apply(tweetInfo)
+    verify(statistic1, never()).apply(tweetInfo)
 
     // wait for the completion
     Await.ready(Future.sequence(listener.statusProcessingFutures), Duration.Inf)
 
     verify(tweetProcessor).process(status)
-    verify(metric1).apply(tweetInfo)
+    verify(statistic1).apply(tweetInfo)
   }
 }

@@ -23,4 +23,27 @@ class StreamStatsSpec extends BaseSpec {
       System.setProperty("file.encoding", oldEncoding)
     }
   }
+
+//  it should "report an exception that occurs while processing a status" in {
+//    val tweetProcessor = mock[TweetProcessor]
+//    val metric1 = mock[Function1[TweetInfo, Unit]]
+//    val status = mock[Status]
+//    val listener = new NonBlockingStatusListener(tweetProcessor, List(metric1))
+//    val tweetInfo = mock[TweetInfo]
+//
+//    // Need to delay the response of the tweet processor so that we can
+//    // prove the method is non-blocking
+//    when(tweetProcessor.process(status)).thenThrow(new IllegalStateException("Boom!"))
+//
+//    listener.onStatus(status)
+//
+//    // wait for the completion
+//    val thrown = intercept[IllegalStateException] {
+//      Await.result(Future.sequence(listener.statusProcessingFutures), Duration.Inf)
+//    }
+//    thrown.getMessage should be("Boom!")
+//
+//    verify(tweetProcessor).process(status)
+//  }
+
 }
