@@ -48,54 +48,54 @@ class PerformanceSpec extends BaseSpec {
   }
 
   it should "benchmark the blocking listener" in {
-    val tweetsPerSecond = runPerformanceTest(new BlockingStatusListener(tweetProcessor, Statistics.all), 200)
+    val tweetsPerSecond = runPerformanceTest("blocking", new BlockingStatusListener(tweetProcessor, Statistics.all), 200)
 //    tweetsPerSecond should be > 300.0
   }
 
   it should "benchmark the parallelized listener" in {
-    val tweetsPerSecond = runPerformanceTest(new ParallelizedStatusListener(tweetProcessor, Statistics.all), 200)
+    val tweetsPerSecond = runPerformanceTest("parallel", new ParallelizedStatusListener(tweetProcessor, Statistics.all), 200)
 //    tweetsPerSecond should be > 1000.0
   }
 
   it should "benchmark the non-blocking listener" in {
     val listener = new NonBlockingStatusListener(tweetProcessor, Statistics.all)
-    val tweetsPerSecond = runPerformanceTest(listener, 200, listener.waitForCompletion _)
+    val tweetsPerSecond = runPerformanceTest("non-blocking", listener, 200, listener.waitForCompletion _)
 //    tweetsPerSecond should be > 1000.0
   }
 
   it should "benchmark the blocking listener with slow metrics" in {
-    val tweetsPerSecond = runPerformanceTest(new BlockingStatusListener(tweetProcessor, slowMetrics(5)), 200)
+    val tweetsPerSecond = runPerformanceTest("blocking (slow metrics)", new BlockingStatusListener(tweetProcessor, slowMetrics(5)), 200)
 //    tweetsPerSecond should be > 30.0
   }
 
   it should "benchmark the parallelized listener with slow metrics" in {
-    val tweetsPerSecond = runPerformanceTest(new ParallelizedStatusListener(tweetProcessor, slowMetrics(5)), 200)
+    val tweetsPerSecond = runPerformanceTest("parallel (slow metrics)", new ParallelizedStatusListener(tweetProcessor, slowMetrics(5)), 200)
 //    tweetsPerSecond should be > 100.0
   }
 
   it should "benchmark the non-blocking listener with slow metrics" in {
     val listener = new NonBlockingStatusListener(tweetProcessor, slowMetrics(5))
-    val tweetsPerSecond = runPerformanceTest(listener, 200, listener.waitForCompletion _)
+    val tweetsPerSecond = runPerformanceTest("non-blocking (slow metrics)", listener, 200, listener.waitForCompletion _)
 //    tweetsPerSecond should be > 600.0
   }
+//
+//  it should "benchmark the blocking listener with the real stream" in {
+//    val tweetsPerSecond = testAgainstRealStream("blocking (real stream)", new BlockingStatusListener(tweetProcessor, Statistics.all))
+////    tweetsPerSecond should be > 20.0
+//  }
+//
+//  it should "benchmark the parallelized listener with the real stream" in {
+//    val tweetsPerSecond = testAgainstRealStream("parallel (real stream)", new ParallelizedStatusListener(tweetProcessor, Statistics.all))
+////    tweetsPerSecond should be > 20.0
+//  }
+//
+//  it should "benchmark the non-blocking listener with the real stream" in {
+//    val listener = new NonBlockingStatusListener(tweetProcessor, Statistics.all)
+//    val tweetsPerSecond = testAgainstRealStream("non-blocking (real stream)", listener, listener.waitForCompletion _)
+////    tweetsPerSecond should be > 20.0
+//  }
 
-  it should "benchmark the blocking listener with the real stream" in {
-    val tweetsPerSecond = testAgainstRealStream(new BlockingStatusListener(tweetProcessor, Statistics.all))
-//    tweetsPerSecond should be > 20.0
-  }
-
-  it should "benchmark the parallelized listener with the real stream" in {
-    val tweetsPerSecond = testAgainstRealStream(new ParallelizedStatusListener(tweetProcessor, Statistics.all))
-//    tweetsPerSecond should be > 20.0
-  }
-
-  it should "benchmark the non-blocking listener with the real stream" in {
-    val listener = new NonBlockingStatusListener(tweetProcessor, Statistics.all)
-    val tweetsPerSecond = testAgainstRealStream(listener, listener.waitForCompletion _)
-//    tweetsPerSecond should be > 20.0
-  }
-
-  def runPerformanceTest(listener: StatusListener, numberOfTweets: Int, wait: () => Any = () => {}):Double = {
+  def runPerformanceTest(name: String, listener: StatusListener, numberOfTweets: Int, wait: () => Any = () => {}):Double = {
     val tweets = (1 to numberOfTweets).map( i => status)
     val elapsed = benchmark({
       tweets.foreach(listener.onStatus(_))
@@ -113,12 +113,11 @@ class PerformanceSpec extends BaseSpec {
     CurrentStats.domainFrequency("google.com") should be(numberOfTweets)
     CurrentStats.domainFrequency("instagram.com") should be(numberOfTweets)
 
-    println("elapsed ms: " + elapsed)
-    println("tweets/s: " + CurrentStats.tweetsPerSecond())
+    println(name + " tweets/s: " + CurrentStats.tweetsPerSecond())
     CurrentStats.tweetsPerSecond()
   }
 
-  def testAgainstRealStream(listener: StatusListener, wait: () => Any = () => {}):Double = {
+  def testAgainstRealStream(name: String, listener: StatusListener, wait: () => Any = () => {}):Double = {
     val elapsed = benchmark {
       val twitterStream = new TwitterStreamFactory(Configuration.create).getInstance
       twitterStream.addListener(listener)
@@ -132,9 +131,8 @@ class PerformanceSpec extends BaseSpec {
       wait()
     }
 
-    println("elapsed ms: " + elapsed)
-    println("tweets/s: " + CurrentStats.tweetsPerSecond())
-    println("results:\n\n")
+    println(name + " tweets/s: " + CurrentStats.tweetsPerSecond())
+    println(name + " results:\n\n")
     println(CurrentStats.toString())
     CurrentStats.tweetsPerSecond()
   }
