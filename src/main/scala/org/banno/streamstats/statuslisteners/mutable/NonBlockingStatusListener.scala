@@ -1,4 +1,4 @@
-package org.banno.streamstats.statuslisteners
+package org.banno.streamstats.statuslisteners.mutable
 
 import org.banno.streamstats.statistics.Stat
 import twitter4j.Status
@@ -6,6 +6,7 @@ import scala.concurrent._
 import ExecutionContext.Implicits.global
 import scala.concurrent.duration._
 import org.banno.streamstats.tweetprocessing.TweetProcessor
+import org.banno.streamstats.statuslisteners.BaseStatusListener
 
 case class NonBlockingStatusListener(tweetProcessor:TweetProcessor, statistics:List[Stat]) extends BaseStatusListener {
   var statusProcessingFutures = collection.mutable.ListBuffer[Future[Any]]()
@@ -13,9 +14,7 @@ case class NonBlockingStatusListener(tweetProcessor:TweetProcessor, statistics:L
   def onStatus(status: Status) {
     statusProcessingFutures += Future {
       statistics.foreach(s => {
-        // It gets slower if I pull tweetInfo out of the loop!
-        // Penalty for maintaining the binding to the local variable?
-        val tweetInfo = tweetProcessor.process(status)
+        val tweetInfo = tweetProcessor.process(status) // Faster with this inside the loop (!)
         s(tweetInfo)
       })
     }

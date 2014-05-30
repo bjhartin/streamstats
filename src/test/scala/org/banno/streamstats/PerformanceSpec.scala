@@ -2,7 +2,8 @@ package org.banno.streamstats
 
 import statistics._
 import mutable.CurrentStats
-import statuslisteners.{ParallelizedStatusListener, NonBlockingStatusListener, BlockingStatusListener}
+import statuslisteners.mutable.NonBlockingStatusListener
+import statuslisteners.{ParallelizedStatusListener, BlockingStatusListener}
 import tweetprocessing._
 import tweetprocessing.TweetProcessor
 import twitter4j.{TwitterStreamFactory, Status, StatusListener}
