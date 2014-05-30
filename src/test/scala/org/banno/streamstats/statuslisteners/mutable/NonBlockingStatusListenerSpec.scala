@@ -36,8 +36,7 @@ class NonBlockingStatusListenerSpec extends BaseSpec {
     listener.statusProcessingFutures.head.isCompleted should be(false)
     verify(statistic1, never()).apply(tweetInfo)
 
-    // wait for the completion
-    Await.ready(Future.sequence(listener.statusProcessingFutures), Duration.Inf)
+    listener.waitForCompletion()
 
     verify(tweetProcessor).process(status)
     verify(statistic1).apply(tweetInfo)

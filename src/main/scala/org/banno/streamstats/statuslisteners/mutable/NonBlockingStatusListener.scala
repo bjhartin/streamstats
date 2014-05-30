@@ -22,6 +22,6 @@ case class NonBlockingStatusListener(tweetProcessor:TweetProcessor, statistics:L
 
   def waitForCompletion() {
     val futureList = Future.sequence(statusProcessingFutures)
-    Await.ready(futureList, Duration.Inf)
+    Await.result(futureList, Duration.Inf)
   }
 }
