@@ -8,11 +8,66 @@ class CurrentStatsSpec extends BaseSpec {
 
   before {CurrentStats.reset()}
 
+
+  /*
+  def tweetsPerSecond: Double = totalTweets.toDouble / ((System.currentTimeMillis() - startTime) / 1000.0)
+  def tweetsPerMinute: Double = tweetsPerSecond / 60.0
+  def tweetsPerHour: Double = tweetsPerMinute / 60.0
+  def percentageOfTweetsWithEmoji: Double = tweetsWithEmojis.toDouble / totalTweets
+  def percentageOfTweetsWithUrls: Double = tweetsWithUrls.toDouble / totalTweets
+  def percentageOfTweetsWithPhotoUrls: Double = tweetsWithPhotoUrls.toDouble / totalTweets
+  def uniqueEmoji:Int = emojiFrequency.size
+  def uniqueDomains:Int = domainFrequency.size
+  def uniqueHashTags:Int = hashTagFrequency.size
+  def top3Emoji = topN[Emoji](emojiFrequency, 3)
+  def top3Hashtags = topN(hashTagFrequency, 3)
+  def top3Domains = domainFrequency.toList.sortBy(_._2).reverse.take(3)
+   */
+
+  it should "Track top domains" in {
+    CurrentStats.domainFrequency.put("twitter.com", 4)
+    CurrentStats.domainFrequency.put("google.com", 30)
+    CurrentStats.domainFrequency.put("yahoo.com", 1)
+    CurrentStats.domainFrequency.put("flickr.com", 20)
+    CurrentStats.domainFrequency.put("instagram.com", 11)
+
+    CurrentStats.top3Domains should be(List(("google.com", 30),
+                                           ("flickr.com", 20),
+                                           ("instagram.com", 11)))
+
+  }
+
+  it should "Track top hashtags" in {
+    CurrentStats.hashtagFrequency.put("red", 4)
+    CurrentStats.hashtagFrequency.put("blue", 30)
+    CurrentStats.hashtagFrequency.put("green", 1)
+    CurrentStats.hashtagFrequency.put("yellow", 20)
+    CurrentStats.hashtagFrequency.put("orange", 11)
+
+    CurrentStats.top3Hashtags should be(List(("blue", 30),
+      ("yellow", 20),
+      ("orange", 11)))
+
+  }
+
+  it should "Track top emoji" in {
+    CurrentStats.emojiFrequency.put(Emoji.allEmoji(0x00AE), 4)
+    CurrentStats.emojiFrequency.put(Emoji.allEmoji(0x203C), 30)
+    CurrentStats.emojiFrequency.put(Emoji.allEmoji(0x2049), 1)
+    CurrentStats.emojiFrequency.put(Emoji.allEmoji(0x2122), 20)
+    CurrentStats.emojiFrequency.put(Emoji.allEmoji(0x2139), 11)
+
+    CurrentStats.top3Emoji should be(List((Emoji.allEmoji(0x203C), 30),
+      (Emoji.allEmoji(0x2122), 20),
+      (Emoji.allEmoji(0x2139), 11)))
+
+  }
+
   it should "Reset all stats" in {
     CurrentStats.totalTweets = 1
     CurrentStats.domainFrequency.put("google.com", 1)
     CurrentStats.emojiFrequency.put(Emoji.allEmoji.values.head, 1)
-    CurrentStats.hashTagFrequency.put("awesome", 1)
+    CurrentStats.hashtagFrequency.put("awesome", 1)
     CurrentStats.tweetsWithPhotoUrls = 1
     CurrentStats.tweetsWithUrls = 3
     CurrentStats.tweetsWithEmojis = 1
@@ -23,7 +78,7 @@ class CurrentStatsSpec extends BaseSpec {
     CurrentStats.totalTweets should be(0)
     CurrentStats.domainFrequency.size should be(0)
     CurrentStats.emojiFrequency.size should be(0)
-    CurrentStats.hashTagFrequency.size should be(0)
+    CurrentStats.hashtagFrequency.size should be(0)
     CurrentStats.tweetsWithPhotoUrls should be(0)
     CurrentStats.tweetsWithUrls should be(0)
     CurrentStats.tweetsWithEmojis should be(0)
@@ -37,9 +92,9 @@ class CurrentStatsSpec extends BaseSpec {
     CurrentStats.emojiFrequency.put(Emoji.allEmoji(0x00AE), 4)
     CurrentStats.emojiFrequency.put(Emoji.allEmoji(0x2195), 2)
     CurrentStats.emojiFrequency.put(Emoji.allEmoji(0x2196), 1)
-    CurrentStats.hashTagFrequency.put("ruby", 3)
-    CurrentStats.hashTagFrequency.put("scala", 4)
-    CurrentStats.hashTagFrequency.put("haskell", 1)
+    CurrentStats.hashtagFrequency.put("ruby", 3)
+    CurrentStats.hashtagFrequency.put("scala", 4)
+    CurrentStats.hashtagFrequency.put("haskell", 1)
     CurrentStats.tweetsWithPhotoUrls = 1
     CurrentStats.tweetsWithUrls = 3
     CurrentStats.tweetsWithEmojis = 2

@@ -123,8 +123,8 @@ class MetricsSpec extends BaseSpec {
     s(tweetInfo(Nil, Nil, List("foo", "bar")))
     s(tweetInfo(Nil, Nil, List("bar")))
 
-    CurrentStats.hashTagFrequency("foo") should be(1)
-    CurrentStats.hashTagFrequency("bar") should be(2)
-    CurrentStats.hashTagFrequency.get("baz") should be(None)
+    CurrentStats.hashtagFrequency("foo") should be(1)
+    CurrentStats.hashtagFrequency("bar") should be(2)
+    CurrentStats.hashtagFrequency.get("baz") should be(None)
   }
 }

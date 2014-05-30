@@ -44,7 +44,7 @@ object Metrics {
       case tags:List[String] => {
         tags.foreach(t =>
           synchronized {
-            CurrentStats.hashTagFrequency(t) = CurrentStats.hashTagFrequency.getOrElse(t, 0) + 1
+            CurrentStats.hashtagFrequency(t) = CurrentStats.hashtagFrequency.getOrElse(t, 0) + 1
           }
         )
       }

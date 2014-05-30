@@ -12,7 +12,7 @@ object CurrentStats {
   val timeFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss")
 
   val emojiFrequency =  collection.mutable.HashMap[Emoji, Int]()
-  val hashTagFrequency = collection.mutable.HashMap[String, Int]()
+  val hashtagFrequency = collection.mutable.HashMap[String, Int]()
   val domainFrequency = collection.mutable.HashMap[String, Int]()
 
   def tweetsPerSecond: Double = totalTweets.toDouble / ((System.currentTimeMillis() - startTime) / 1000.0)
@@ -23,9 +23,9 @@ object CurrentStats {
   def percentageOfTweetsWithPhotoUrls: Double = tweetsWithPhotoUrls.toDouble / totalTweets
   def uniqueEmoji:Int = emojiFrequency.size
   def uniqueDomains:Int = domainFrequency.size
-  def uniqueHashTags:Int = hashTagFrequency.size
+  def uniqueHashTags:Int = hashtagFrequency.size
   def top3Emoji = topN[Emoji](emojiFrequency, 3)
-  def top3Hashtags = topN(hashTagFrequency, 3)
+  def top3Hashtags = topN(hashtagFrequency, 3)
   def top3Domains = domainFrequency.toList.sortBy(_._2).reverse.take(3)
 
   def reset() {
@@ -36,7 +36,7 @@ object CurrentStats {
 
     startTime = System.currentTimeMillis()
     emojiFrequency.clear()
-    hashTagFrequency.clear()
+    hashtagFrequency.clear()
     domainFrequency.clear()
   }
 

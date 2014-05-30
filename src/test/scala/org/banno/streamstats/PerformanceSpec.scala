@@ -82,8 +82,8 @@ class PerformanceSpec extends BaseSpec {
     CurrentStats.tweetsWithPhotoUrls should be(numberOfTweets)
     CurrentStats.emojiFrequency(Emoji.allEmoji(0x2708)) should be(numberOfTweets)
     CurrentStats.emojiFrequency(Emoji.allEmoji(0x270F)) should be(numberOfTweets)
-    CurrentStats.hashTagFrequency("tag1") should be(numberOfTweets)
-    CurrentStats.hashTagFrequency("tag2") should be(numberOfTweets)
+    CurrentStats.hashtagFrequency("tag1") should be(numberOfTweets)
+    CurrentStats.hashtagFrequency("tag2") should be(numberOfTweets)
     CurrentStats.domainFrequency("google.com") should be(numberOfTweets)
     CurrentStats.domainFrequency("instagram.com") should be(numberOfTweets)
 
