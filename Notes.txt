@@ -13,6 +13,8 @@
 * Mention why I have empty tests
 * Question about duplicated emoji, urls and hashtags in a tweet
 * Used no-op listener to check rate
+* Idea about using every nth tweet
+  * Given pool of N processors, with each one being given a number, and synchronizing
 
 Blocking tps: 730 (was 2000 before I made the status return text)
 Non-blocking tps: 600 (was 1600 before I made the status return text)

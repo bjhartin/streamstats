@@ -2,6 +2,7 @@ package org.banno.streamstats.tweetprocessing
 
 import org.banno.streamstats.BaseSpec
 import twitter4j.Status
+import twitter4j.URLEntity
 import org.mockito.Mockito._
 
 class TweetInfoExtractorSpec extends BaseSpec {
@@ -37,13 +38,19 @@ class TweetInfoExtractorSpec extends BaseSpec {
 
   it should "extract all urls from a tweet using Twitter's text extractor" in {
     val status = mock[Status]
-    when(status.getText()).thenReturn("http://google.com and http://bing.com are search engines")
+    val urlEntity1 = mock[URLEntity]
+    when(urlEntity1.getExpandedURL).thenReturn("http://google.com")
+    val urlEntity2 = mock[URLEntity]
+    when(urlEntity2.getExpandedURL).thenReturn("http://bing.com")
+
+    val urlEntities = Array(urlEntity1, urlEntity2)
+    when(status.getURLEntities()).thenReturn(urlEntities)
     TweetInfoExtractor.urls.extract(status) should be(List("http://google.com", "http://bing.com"))
   }
 
   it should "not fail when no urls present" in {
     val status = mock[Status]
-    when(status.getText()).thenReturn("foo")
+    when(status.getURLEntities()).thenReturn(Array[URLEntity]())
     TweetInfoExtractor.urls.extract(status) should be(Nil)
   }
 }

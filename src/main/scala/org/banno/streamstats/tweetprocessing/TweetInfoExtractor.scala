@@ -20,9 +20,12 @@ object TweetInfoExtractor {
     twitterTextExtractor.extractHashtags(status.getText).asScala.toList
   )
 
-  def urls = TweetInfoExtractor("urls", status =>
-    twitterTextExtractor.extractURLs(status.getText).asScala.toList
-  )
+  def urls = TweetInfoExtractor("urls", status => {
+    status.getURLEntities match {
+      case null => Nil
+      case entities => entities.map(_.getExpandedURL()).toList
+    }
+  })
 
   def all(): List[TweetInfoExtractor] = List(count, emoji, hashtags, urls)
 }
