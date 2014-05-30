@@ -2,30 +2,48 @@ package org.banno.streamstats
 
 import statistics._
 import mutable.CurrentStats
+import statuslisteners.BlockingStatusListener
 import statuslisteners.mutable.NonBlockingStatusListener
+import statuslisteners.mutable.NonBlockingStatusListener
+import statuslisteners.ParallelizedStatusListener
 import statuslisteners.{ParallelizedStatusListener, BlockingStatusListener}
 import tweetprocessing._
 import tweetprocessing.TweetProcessor
-import twitter4j.{URLEntity, TwitterStreamFactory, Status, StatusListener}
+import tweetprocessing.TweetProcessor
+import twitter4j._
 import org.mockito.Mockito._
 
 class PerformanceSpec extends BaseSpec {
   behavior of "Performance benchmarks"
 
   def tweetProcessor = new TweetProcessor(TweetInfoExtractor.all)
+  def hashTagEntities(hashtags:List[String]) = {
+    hashtags.map(tag => {
+      val mockHashtagEntity = mock[HashtagEntity]
+      when(mockHashtagEntity.getText).thenReturn(tag)
+      mockHashtagEntity
+    }).toArray
+  }
 
-  before {CurrentStats.reset}
+  def urlEntities(urls:List[String])={
+    urls.map(url => {
+      val mockUrlEntity = mock[URLEntity]
+      when(mockUrlEntity.getExpandedURL).thenReturn(url)
+      mockUrlEntity
+    }).toArray
+  }
+
+  before {CurrentStats.reset()}
 
   def status = {
     val mockTweet = mock[Status]
-    val urlEntity1 = mock[URLEntity]
-    when(urlEntity1.getExpandedURL).thenReturn("http://google.com")
-    val urlEntity2 = mock[URLEntity]
-    when(urlEntity2.getExpandedURL).thenReturn("http://instagram.com/pic1")
-    val urlEntities = Array(urlEntity1, urlEntity2)
-
     when(mockTweet.getText).thenReturn("\u2708 and \u270F and #tag1 and #tag2 and http://google.com and http://instagram.com/pic1")
-    when(mockTweet.getURLEntities).thenReturn(urlEntities)
+
+    val urls = urlEntities(List("http://google.com", "http://instagram.com/pic1"))
+    val hashtags = hashTagEntities(List("tag1", "tag2"))
+
+    when(mockTweet.getURLEntities).thenReturn(urls)
+    when(mockTweet.getHashtagEntities).thenReturn(hashtags)
     mockTweet
   }
 

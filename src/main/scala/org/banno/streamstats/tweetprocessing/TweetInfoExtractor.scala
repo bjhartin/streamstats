@@ -17,7 +17,10 @@ object TweetInfoExtractor {
   )
 
   def hashtags = TweetInfoExtractor("hashtags", status =>
-    twitterTextExtractor.extractHashtags(status.getText).asScala.toList
+    status.getHashtagEntities match {
+      case null => Nil
+      case entities => entities.map(_.getText()).toList
+    }
   )
 
   def urls = TweetInfoExtractor("urls", status => {
