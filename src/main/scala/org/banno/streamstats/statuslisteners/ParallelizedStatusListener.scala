@@ -12,6 +12,6 @@ case class ParallelizedStatusListener(tweetProcessor:TweetProcessor, statistics:
     val tweetInfo = tweetProcessor.process(status)
     val futures = statistics.map(s => {Future {s(tweetInfo)}})
     val futureList = Future.sequence(futures)
-    Await.ready(futureList, Duration.Inf)
+    Await.result(futureList, Duration.Inf)
   }
 }
