@@ -13,7 +13,7 @@ object Metrics {
       case Nil =>
       case emoji:List[Emoji] => {
         synchronized {
-          CurrentStats.tweetsWithEmojis += 1
+          CurrentStats.tweetsWithEmoji += 1
           emoji.foreach(e =>
             CurrentStats.emojiFrequency(e) = CurrentStats.emojiFrequency.getOrElse(e, 0) + 1
           )

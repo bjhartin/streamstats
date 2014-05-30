@@ -23,16 +23,6 @@ class MetricsSpec extends BaseSpec {
     CurrentStats.totalTweets should be(2)
   }
 
-  it should "Compute percentage of tweets per hour, minute and second" in {
-    Thread.sleep(1000)
-    CurrentStats.totalTweets = 4
-
-    val tps = CurrentStats.tweetsPerSecond
-    tps should be(4.0 +- 0.1)
-    CurrentStats.tweetsPerMinute should be (4.0/60 +- 0.1)
-    CurrentStats.tweetsPerHour should be (4.0/(60*60) +- 0.1)
-  }
-
   it should "Track number of tweets with emojis" in {
     val emoji1 = Emoji.allEmoji(0x00AE)
     val emoji2 = Emoji.allEmoji(0x203C)
@@ -43,7 +33,7 @@ class MetricsSpec extends BaseSpec {
     s(tweetInfo(List(emoji1)))
     s(tweetInfo(List(emoji2)))
 
-    CurrentStats.tweetsWithEmojis should be(2)
+    CurrentStats.tweetsWithEmoji should be(2)
   }
 
   it should "Track emoji frequency" in {
@@ -66,7 +56,7 @@ class MetricsSpec extends BaseSpec {
 
   it should "Compute percentage of tweets with emojis" in {
     CurrentStats.totalTweets = 4
-    CurrentStats.tweetsWithEmojis = 2
+    CurrentStats.tweetsWithEmoji = 2
     CurrentStats.percentageOfTweetsWithEmoji should be(0.5 +- 0.01)
   }
 

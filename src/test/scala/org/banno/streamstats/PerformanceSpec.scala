@@ -77,7 +77,7 @@ class PerformanceSpec extends BaseSpec {
     })
 
     CurrentStats.totalTweets should be(numberOfTweets)
-    CurrentStats.tweetsWithEmojis should be(numberOfTweets)
+    CurrentStats.tweetsWithEmoji should be(numberOfTweets)
     CurrentStats.tweetsWithUrls should be(numberOfTweets)
     CurrentStats.tweetsWithPhotoUrls should be(numberOfTweets)
     CurrentStats.emojiFrequency(Emoji.allEmoji(0x2708)) should be(numberOfTweets)
@@ -104,7 +104,7 @@ class PerformanceSpec extends BaseSpec {
     twitterStream.shutdown
     println("Done")
     wait()
-    CurrentStats.tweetsPerSecond
+    CurrentStats.tweetsPerSecond()
   }
 
   private def slowMetrics(metricOverheadInMs:Int):List[Stat] = {

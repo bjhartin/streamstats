@@ -2,6 +2,7 @@ package org.banno.streamstats.statistics.mutable
 
 import org.banno.streamstats.BaseSpec
 import org.banno.streamstats.tweetprocessing.Emoji
+import java.util.Calendar
 
 class CurrentStatsSpec extends BaseSpec {
   behavior of "A CurrentStats"
@@ -13,18 +14,35 @@ class CurrentStatsSpec extends BaseSpec {
   def tweetsPerSecond: Double = totalTweets.toDouble / ((System.currentTimeMillis() - startTime) / 1000.0)
   def tweetsPerMinute: Double = tweetsPerSecond / 60.0
   def tweetsPerHour: Double = tweetsPerMinute / 60.0
-  def percentageOfTweetsWithEmoji: Double = tweetsWithEmojis.toDouble / totalTweets
-  def percentageOfTweetsWithUrls: Double = tweetsWithUrls.toDouble / totalTweets
-  def percentageOfTweetsWithPhotoUrls: Double = tweetsWithPhotoUrls.toDouble / totalTweets
-  def uniqueEmoji:Int = emojiFrequency.size
-  def uniqueDomains:Int = domainFrequency.size
-  def uniqueHashTags:Int = hashTagFrequency.size
-  def top3Emoji = topN[Emoji](emojiFrequency, 3)
-  def top3Hashtags = topN(hashTagFrequency, 3)
-  def top3Domains = domainFrequency.toList.sortBy(_._2).reverse.take(3)
-   */
+    */
 
-  it should "Track top domains" in {
+  it should "compute percentage of tweets per hour, minute and second" in {
+    CurrentStats.totalTweets = 10
+    val endTime = CurrentStats.startTime + 2000
+    CurrentStats.tweetsPerSecond(endTime) should be(5.0 +- 0.0001)
+    CurrentStats.tweetsPerMinute(endTime) should be((5.0 / 60 )+- 0.0001)
+    CurrentStats.tweetsPerHour(endTime) should be((5.0 / (60 * 60))+- 0.0001)
+  }
+
+  it should "compute percentage of tweets with urls" in {
+    CurrentStats.totalTweets = 10
+    CurrentStats.tweetsWithUrls = 5
+    CurrentStats.percentageOfTweetsWithUrls should be(0.5 +- 0.0001)
+  }
+
+  it should "compute percentage of tweets with photo urls" in {
+    CurrentStats.totalTweets = 10
+    CurrentStats.tweetsWithPhotoUrls = 5
+    CurrentStats.percentageOfTweetsWithPhotoUrls should be(0.5 +- 0.0001)
+  }
+
+  it should "compute percentage of tweets with emoji" in {
+    CurrentStats.totalTweets = 10
+    CurrentStats.tweetsWithEmoji = 5
+    CurrentStats.percentageOfTweetsWithEmoji should be (0.5 +- 0.0001)
+  }
+
+  it should "compute top domains" in {
     CurrentStats.domainFrequency.put("twitter.com", 4)
     CurrentStats.domainFrequency.put("google.com", 30)
     CurrentStats.domainFrequency.put("yahoo.com", 1)
@@ -34,10 +52,12 @@ class CurrentStatsSpec extends BaseSpec {
     CurrentStats.top3Domains should be(List(("google.com", 30),
                                            ("flickr.com", 20),
                                            ("instagram.com", 11)))
+    CurrentStats.uniqueDomains should be(5)
+
 
   }
 
-  it should "Track top hashtags" in {
+  it should "compute top hashtags" in {
     CurrentStats.hashtagFrequency.put("red", 4)
     CurrentStats.hashtagFrequency.put("blue", 30)
     CurrentStats.hashtagFrequency.put("green", 1)
@@ -47,10 +67,12 @@ class CurrentStatsSpec extends BaseSpec {
     CurrentStats.top3Hashtags should be(List(("blue", 30),
       ("yellow", 20),
       ("orange", 11)))
+    CurrentStats.uniqueHashtags should be(5)
 
   }
 
-  it should "Track top emoji" in {
+  it should "compute top emoji" in {
+    CurrentStats.totalTweets = 10
     CurrentStats.emojiFrequency.put(Emoji.allEmoji(0x00AE), 4)
     CurrentStats.emojiFrequency.put(Emoji.allEmoji(0x203C), 30)
     CurrentStats.emojiFrequency.put(Emoji.allEmoji(0x2049), 1)
@@ -60,7 +82,7 @@ class CurrentStatsSpec extends BaseSpec {
     CurrentStats.top3Emoji should be(List((Emoji.allEmoji(0x203C), 30),
       (Emoji.allEmoji(0x2122), 20),
       (Emoji.allEmoji(0x2139), 11)))
-
+    CurrentStats.uniqueEmoji should be(5)
   }
 
   it should "Reset all stats" in {
@@ -70,7 +92,7 @@ class CurrentStatsSpec extends BaseSpec {
     CurrentStats.hashtagFrequency.put("awesome", 1)
     CurrentStats.tweetsWithPhotoUrls = 1
     CurrentStats.tweetsWithUrls = 3
-    CurrentStats.tweetsWithEmojis = 1
+    CurrentStats.tweetsWithEmoji = 1
     val startTime = CurrentStats.startTime
 
     CurrentStats.reset()
@@ -81,7 +103,7 @@ class CurrentStatsSpec extends BaseSpec {
     CurrentStats.hashtagFrequency.size should be(0)
     CurrentStats.tweetsWithPhotoUrls should be(0)
     CurrentStats.tweetsWithUrls should be(0)
-    CurrentStats.tweetsWithEmojis should be(0)
+    CurrentStats.tweetsWithEmoji should be(0)
   }
 
   it should "Report all stats" in {
@@ -97,7 +119,7 @@ class CurrentStatsSpec extends BaseSpec {
     CurrentStats.hashtagFrequency.put("haskell", 1)
     CurrentStats.tweetsWithPhotoUrls = 1
     CurrentStats.tweetsWithUrls = 3
-    CurrentStats.tweetsWithEmojis = 2
+    CurrentStats.tweetsWithEmoji = 2
 
 
     Thread.sleep(500)  // Needed so tweets/s isn't 'Infinity'
