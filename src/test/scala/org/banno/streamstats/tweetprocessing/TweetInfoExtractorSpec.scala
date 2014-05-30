@@ -9,15 +9,15 @@ class TweetInfoExtractorSpec extends BaseSpec {
     TweetInfoExtractor.count.extract(mock[Status]) should be(1)
   }
 
-  it should "extract all emojis from a tweet" in {
+  it should "extract all emoji from a tweet" in {
     val status = mock[Status]
-    when(status.getText).thenReturn("This is a tweet with two emojis \u2708 and \u270F")
+    when(status.getText).thenReturn("This is a tweet with two emoji \u2708 and \u270F")
     val emoji1 = Emoji.find(0x2708.toChar).get
     val emoji2 = Emoji.find(0x270F.toChar).get
     TweetInfoExtractor.emoji.extract(status) should be(List(emoji1, emoji2))
   }
 
-  it should "not fail when no emojis present" in {
+  it should "not fail when no emoji present" in {
     val status = mock[Status]
     when(status.getText).thenReturn("foo")
     TweetInfoExtractor.emoji.extract(status) should be(Nil)

@@ -11,7 +11,8 @@
 
 * Don't like that TweetInfoExtractors have a string name
 * Mention why I have empty tests
-* Question about duplicated emojis, urls and hashtags in a tweet
+* Question about duplicated emoji, urls and hashtags in a tweet
+* Used no-op listener to check rate
 
 Blocking tps: 730 (was 2000 before I made the status return text)
 Non-blocking tps: 600 (was 1600 before I made the status return text)

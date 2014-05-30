@@ -7,11 +7,10 @@ X Individual stats implementations
 X Reporting
 X Fail if JVM encoding not UTF-8
 X Cleanup pom and imports
+X Handle errors in futures (and other places?)
+X Unit tests for listeners / other missing tests
 
-Handle errors in futures (and other places?)
-Unit tests for listeners / other missing tests
-Wire in main class
-
+rename metrics
 emojis -> emoji
 In perf test, tps not used from CurrentStats
 Add assertions for times in tests  rf

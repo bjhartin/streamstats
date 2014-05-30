@@ -4,8 +4,8 @@ import mutable.CurrentStats
 import org.banno.streamstats.BaseSpec
 import org.banno.streamstats.tweetprocessing._
 
-class MetricsSpec extends BaseSpec {
-  behavior of "Metrics functions"
+class StatisticsSpec extends BaseSpec {
+  behavior of "Statistics functions"
 
   before {CurrentStats.reset}
 
@@ -17,17 +17,17 @@ class MetricsSpec extends BaseSpec {
   }
 
   it should "Track total tweets" in {
-    val s = Metrics.trackTweets _
+    val s = Statistics.trackTweets _
     s(tweetInfo())
     s(tweetInfo())
     CurrentStats.totalTweets should be(2)
   }
 
-  it should "Track number of tweets with emojis" in {
+  it should "Track number of tweets with emoji" in {
     val emoji1 = Emoji.allEmoji(0x00AE)
     val emoji2 = Emoji.allEmoji(0x203C)
 
-    val s = Metrics.trackEmojis _
+    val s = Statistics.trackEmoji _
 
     s(tweetInfo())
     s(tweetInfo(List(emoji1)))
@@ -41,7 +41,7 @@ class MetricsSpec extends BaseSpec {
     val emoji2 = Emoji.allEmoji(0x203C)
     val emoji3 = Emoji.allEmoji(0x2049)
 
-    val s = Metrics.trackEmojis _
+    val s = Statistics.trackEmoji _
 
     s(tweetInfo())
     s(tweetInfo(List(emoji1)))
@@ -54,14 +54,14 @@ class MetricsSpec extends BaseSpec {
     CurrentStats.emojiFrequency.get(emoji3) should be(None)
   }
 
-  it should "Compute percentage of tweets with emojis" in {
+  it should "Compute percentage of tweets with emoji" in {
     CurrentStats.totalTweets = 4
     CurrentStats.tweetsWithEmoji = 2
     CurrentStats.percentageOfTweetsWithEmoji should be(0.5 +- 0.01)
   }
 
   it should "Track number of tweets with urls" in {
-    val s = Metrics.trackUrls _
+    val s = Statistics.trackUrls _
 
     s(tweetInfo(Nil))
     s(tweetInfo(Nil, List("http://learnyouahaskell.com")))
@@ -77,7 +77,7 @@ class MetricsSpec extends BaseSpec {
   }
 
   it should "Track number of tweets with photo urls" in {
-    val s = Metrics.trackUrls _
+    val s = Statistics.trackUrls _
 
     s(tweetInfo(Nil, List("http://notapicture")))
     s(tweetInfo(Nil, List("http://pic.twitter.com")))
@@ -94,7 +94,7 @@ class MetricsSpec extends BaseSpec {
   }
 
   it should "Track domain frequency" in {
-    val s = Metrics.trackUrls _
+    val s = Statistics.trackUrls _
 
     s(tweetInfo(Nil, List("http://en.wikipedia.org/wiki/Game")))
     s(tweetInfo(Nil, List("http://news.ycombinator.com")))
@@ -107,7 +107,7 @@ class MetricsSpec extends BaseSpec {
   }
 
   it should "Track hashtag frequency" in {
-    val s = Metrics.trackHashTags _
+    val s = Statistics.trackHashTags _
 
     s(tweetInfo())
     s(tweetInfo(Nil, Nil, List("foo", "bar")))

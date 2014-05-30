@@ -4,11 +4,11 @@ import mutable.CurrentStats
 import org.banno.streamstats.tweetprocessing._
 import java.net.URI
 
-object Metrics {
+object Statistics {
   def trackTweets(ti:TweetInfo) = {
-    synchronized {CurrentStats.totalTweets += 1}} // Can't use _ for some reason
+    synchronized {CurrentStats.totalTweets += 1}}
 
-  def trackEmojis(ti:TweetInfo) = {
+  def trackEmoji(ti:TweetInfo) = {
     (ti("emoji") match {
       case Nil =>
       case emoji:List[Emoji] => {
@@ -51,7 +51,7 @@ object Metrics {
     })
   }
 
-  def all: List[Stat] = List(trackTweets _, trackEmojis _, trackUrls _, trackHashTags _)
+  def all: List[Stat] = List(trackTweets _, trackEmoji _, trackUrls _, trackHashTags _)
 
   private val twitterPhotoRegexp = "http://(pic\\.twitter|instagram)\\.com/.+".r
 
