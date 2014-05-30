@@ -10,6 +10,7 @@ import concurrent.duration.Duration
 import ExecutionContext.Implicits.global
 import org.mockito.stubbing.Answer
 import org.mockito.invocation.InvocationOnMock
+import org.banno.streamstats.statuslisteners.ParallelizedStatusListener
 
 class NonBlockingStatusListenerSpec extends BaseSpec {
   behavior of "A non-blocking StatusListener"
@@ -40,5 +41,22 @@ class NonBlockingStatusListenerSpec extends BaseSpec {
 
     verify(tweetProcessor).process(status)
     verify(statistic1).apply(tweetInfo)
+  }
+
+  it should "throw errors from futures" in {
+    val tweetProcessor = mock[TweetProcessor]
+    val statistic1 = mock[Function1[TweetInfo, Unit]]
+    val status = mock[Status]
+    val tweetInfo = mock[TweetInfo]
+    val listener = new NonBlockingStatusListener(tweetProcessor, List(statistic1))
+
+    when(tweetProcessor.process(status)).thenReturn(tweetInfo)
+    when(statistic1.apply(tweetInfo)).thenThrow(new IllegalStateException("Boom!"))
+
+    val thrown = intercept[IllegalStateException] {
+      listener.onStatus(status)
+      listener.waitForCompletion()
+    }
+    thrown.getMessage should be("Boom!")
   }
 }
