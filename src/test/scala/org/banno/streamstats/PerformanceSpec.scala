@@ -78,16 +78,16 @@ class PerformanceSpec extends BaseSpec {
     val tweetsPerSecond = runPerformanceTest(listener, 200, listener.waitForCompletion _)
     tweetsPerSecond should be > 30.0
   }
-//
-//  it should "benchmark the blocking listener with the real stream" in {
-//    val tweetsPerSecond = testAgainstRealStream(new BlockingStatusListener(tweetProcessor, Statistics.all))
-//    tweetsPerSecond should be > 20.0
-//  }
-//
-//  it should "benchmark the parallelized listener with the real stream" in {
-//    val tweetsPerSecond = testAgainstRealStream(new ParallelizedStatusListener(tweetProcessor, Statistics.all))
-//    tweetsPerSecond should be > 20.0
-//  }
+
+  it should "benchmark the blocking listener with the real stream" in {
+    val tweetsPerSecond = testAgainstRealStream(new BlockingStatusListener(tweetProcessor, Statistics.all))
+    tweetsPerSecond should be > 20.0
+  }
+
+  it should "benchmark the parallelized listener with the real stream" in {
+    val tweetsPerSecond = testAgainstRealStream(new ParallelizedStatusListener(tweetProcessor, Statistics.all))
+    tweetsPerSecond should be > 20.0
+  }
 
   it should "benchmark the non-blocking listener with the real stream" in {
     val listener = new NonBlockingStatusListener(tweetProcessor, Statistics.all)
@@ -114,14 +114,8 @@ class PerformanceSpec extends BaseSpec {
     CurrentStats.domainFrequency("instagram.com") should be(numberOfTweets)
 
     println("elapsed ms: " + elapsed)
-    val tps = numberOfTweets / (elapsed / 1000)
-    println("tweets/s: " + tps)
-
-//    println("tweets/s: " + CurrentStats.tweetsPerSecond())
-    println("results:\n\n")
-    println(CurrentStats.toString())
-//    CurrentStats.tweetsPerSecond()
-    tps
+    println("tweets/s: " + CurrentStats.tweetsPerSecond())
+    CurrentStats.tweetsPerSecond()
   }
 
   def testAgainstRealStream(listener: StatusListener, wait: () => Any = () => {}):Double = {

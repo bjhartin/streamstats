@@ -11,9 +11,10 @@ X Handle errors in futures (and other places?)
 X Unit tests for listeners / other missing tests
 X rename metrics
 X emojis -> emoji
-
-Fix type erasure bug
 Do we really want the type alias?
   Can we do something better than the map?
 Can we remove mutability (CurrentStats)?  This is probably not safe with parallel tests.
 ? Handle emoji char ranges
+                        '
+
+

@@ -11,10 +11,10 @@ object Statistics {
   def trackEmoji(ti:TweetInfo) = {
     (ti("emoji") match {
       case Nil =>
-      case emoji:List[Emoji] => {
+      case emoji => {
         synchronized {
           CurrentStats.tweetsWithEmoji += 1
-          emoji.foreach(e =>
+          emoji.asInstanceOf[List[Emoji]].foreach(e =>
             CurrentStats.emojiFrequency(e) = CurrentStats.emojiFrequency.getOrElse(e, 0) + 1
           )
         }
@@ -25,11 +25,11 @@ object Statistics {
   def trackUrls(ti:TweetInfo) = {
     (ti("urls") match {
       case Nil => 0
-      case urls:List[String] => {
+      case urls => {
         synchronized {
           CurrentStats.tweetsWithUrls += 1
-          CurrentStats.tweetsWithPhotoUrls += countPhotoUrls(urls)
-          urls.map(extractDomain).foreach(d => {
+          CurrentStats.tweetsWithPhotoUrls += countPhotoUrls(urls.asInstanceOf[List[String]])
+          urls.asInstanceOf[List[String]].map(extractDomain).foreach(d => {
              CurrentStats.domainFrequency(d) = CurrentStats.domainFrequency.getOrElse(d, 0) + 1
             }
           )
@@ -41,8 +41,8 @@ object Statistics {
   def trackHashTags(ti:TweetInfo) = {
     (ti("hashtags") match {
       case Nil => 0
-      case tags:List[String] => {
-        tags.foreach(t =>
+      case tags => {
+        tags.asInstanceOf[List[String]].foreach(t =>
           synchronized {
             CurrentStats.hashtagFrequency(t) = CurrentStats.hashtagFrequency.getOrElse(t, 0) + 1
           }

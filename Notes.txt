@@ -1,20 +1,40 @@
-* Used twitter4j
-* Used twitter-text
-** Did not need to write edge-case tests
-* Targeted 1000 tweets/s for all low-level ops
-** Many of these can be much faster if I simply convert some defs to vals
+Hey Luke,
 
-* Commented out tests
-* UTF8
-* Use of slow metrics to overcome overhead and false indicators
-* Only look for unified emoji codes
+Please find my code for the programming assignment at http://github.com/bjhartin/streamstats.
 
-* Don't like that TweetInfoExtractors have a string name
-* Mention why I have empty tests
-* Question about duplicated emoji, urls and hashtags in a tweet
-* Used no-op listener to check rate
-* Idea about using every nth tweet
-  * Given pool of N processors, with each one being given a number, and synchronizing
+Here are some notable features and known problems.
+
+- I used Twitter4j to read from the stream
+
+- I implemented three listeners:
+  - a blocking one
+  - a parallel one (which blocks for each tweet but does the stat work for that Tweet in parallel)
+  - a non-blocking one
+
+- See PerformanceSpec for comparison tests for these.  There are three kinds of tests:
+
+  - against the live stream (all listeners: between 20-40 tweets/second)
+
+    These slow rates are due to the rate at which the tweets come in.  I proved this by temporarily implementing a no-op listener.  The next tests tell the tale.
+
+  - against a list of tweets I provide with a loop (blocking: 449 t/s, parallel: 1729 t/s, non-blocking: 1176 t/s)
+
+    The parallel one seems faster, but that's only due to some small overhead of the non-blocking one.  When we make the computations a bit slower, the non-blocking one breaks into the lead (next test).
+
+  - same test, but artificially slowing down the stat computations by 5ms each (blocking: 42 t/s, parallel: 167 t/s, non-blocking: 839 t/s)
+
+   Here we can see the non-blocking listener show a big lead over the parallel one.
+
+  (All rates are, of course, relative to CPU and other factors.  YMMV.)
+
+
+- I leaned on mutability a little bit, for collecting the stats information.
+
+
+Things I would improve if I had more time:
+
+- I don't like the mutability - one idea I had would be to implement a 'fold' over the stream.  Maybe a good exercise to pair on?
+- There are a few Emoji I think I am not handling correctly.  Some of them have two codes, and I didn't find an explanation of that.  I skipped those few since this didn't seem like the meat of the problem.
 
 Blocking tps: 730 (was 2000 before I made the status return text)
 Non-blocking tps: 600 (was 1600 before I made the status return text)
